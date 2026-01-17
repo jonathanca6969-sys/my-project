@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(copy \"C:\\\\Users\\\\jonat\\\\Desktop\\\\MateToolingCalculators_v6_FIXED.html\" \"C:\\\\Users\\\\jonat\\\\my-project\\\\index.html\")",
+      "Bash(start \"\" \"C:\\\\Users\\\\jonat\\\\my-project\\\\index.html\")",
+      "Bash(gh auth status:*)",
+      "Bash(powershell -Command \"winget --version\")",
+      "Bash(powershell -Command \"choco --version\")",
+      "Bash(powershell -Command \"Invoke-WebRequest -Uri ''https://github.com/cli/cli/releases/download/v2.63.2/gh_2.63.2_windows_amd64.msi'' -OutFile ''$env:TEMP\\\\gh_installer.msi''; Start-Process msiexec.exe -ArgumentList ''/i'', \"\"$env:TEMP\\\\gh_installer.msi\"\", ''/quiet'', ''/norestart'' -Wait\")",
+      "Bash(gh:*)",
+      "Bash(git -C \"C:\\\\Users\\\\jonat\\\\my-project\" status)",
+      "Bash(git -C \"C:\\\\Users\\\\jonat\\\\my-project\" add:*)",
+      "Bash(git -C \"C:\\\\Users\\\\jonat\\\\my-project\" commit -m \"$\\(cat <<''EOF''\nInitial commit: Mate Tooling Calculators webapp\n\n- Die Height calculator with shim calculations\n- Die Clearance calculator \\(textbook vs empirical\\)\n- Tonnage calculator with cluster analysis\n- SBR grind life calculator\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")"
+    ]
+  }
+}
