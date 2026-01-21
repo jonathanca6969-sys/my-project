@@ -232,7 +232,7 @@
     // State management
     let currentPage = 'home';
     let state = {
-      dieHeight: { dieType: '31.7x30.15', measuredHeight: '', currentShims: '0', notes: '', showNotes: false },
+      dieHeight: { dieType: '12.7x20', measuredHeight: '20.00', currentShims: '0', notes: '', showNotes: false },
       clearance: { material: 'Aluminium', thickness: 3.0, operation: 'Piercing', showAddForm: false, newEntry: { material: 'Aluminium', thickness: '', operation: 'Piercing', clearanceMM: '', notes: '' }, notes: '', showNotes: false },
       tonnage: { 
         punchTypes: [{ id: 1, shape: 'Round', smallerDim: '3.2', largerDim: '', cornerRadius: '', quantity: '12' }],
@@ -489,26 +489,26 @@
       ];
 
       return `
-        <div style="padding: 1rem 1.5rem;">
-          <header style="text-align: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid ${theme.border};">
-            <div style="font-family: 'Courier New', monospace; font-size: 1rem; color: ${theme.textMuted}; margin-bottom: 0.25rem; letter-spacing: 0.3em;">▓▓▓ SYSTEM ONLINE ▓▓▓</div>
-            <h1 style="font-family: 'Courier New', monospace; font-size: 2rem; font-weight: 700; color: ${theme.accentBright}; letter-spacing: 0.1em; margin-bottom: 0.25rem; text-shadow: 0 0 20px rgba(136, 255, 187, 0.6), ${theme.terminalGlow};">MATE TOOLING CALCULATORS</h1>
-            <div style="font-size: 0.95rem; color: ${theme.text}; font-family: 'Courier New', monospace; text-shadow: ${theme.terminalGlow};">Euromac S17 MTX · Thick Turret Systems</div>
-            <div style="font-size: 1rem; color: ${theme.textMuted}; font-family: 'Courier New', monospace; margin-top: 0.25rem;">&gt; SELECT MODULE_</div>
+        <div style="padding: 2rem 3rem; min-height: 100vh; display: flex; flex-direction: column; justify-content: center;">
+          <header style="text-align: center; margin-bottom: 3rem; padding-bottom: 1.5rem; border-bottom: 2px solid ${theme.border};">
+            <div style="font-family: 'Courier New', monospace; font-size: 1.25rem; color: ${theme.textMuted}; margin-bottom: 0.5rem; letter-spacing: 0.4em;">▓▓▓ SYSTEM ONLINE ▓▓▓</div>
+            <h1 style="font-family: 'Courier New', monospace; font-size: 3rem; font-weight: 700; color: ${theme.accentBright}; letter-spacing: 0.15em; margin-bottom: 0.5rem; text-shadow: 0 0 30px rgba(136, 255, 187, 0.6), ${theme.terminalGlow};">MATE TOOLING CALCULATORS</h1>
+            <div style="font-size: 1.25rem; color: ${theme.text}; font-family: 'Courier New', monospace; text-shadow: ${theme.terminalGlow};">Euromac S17 MTX · Thick Turret Systems</div>
+            <div style="font-size: 1.3rem; color: ${theme.textMuted}; font-family: 'Courier New', monospace; margin-top: 0.5rem;">&gt; SELECT MODULE_</div>
           </header>
-          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; max-width: 700px; margin: 0 auto;">
+          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 2.5rem; max-width: 1100px; margin: 0 auto;">
             ${cards.map(card => `
-              <button onclick="navigate('${card.id}')" style="background: rgba(15, 21, 16, 0.9); border: 2px solid ${theme.border}; border-radius: 2px; padding: 1.5rem 1.25rem; cursor: pointer; text-align: center; box-shadow: inset 0 0 30px rgba(0,0,0,0.5);" onmouseover="this.style.borderColor='${theme.accent}'; this.style.boxShadow='inset 0 0 30px rgba(0,0,0,0.5), ${theme.terminalGlow}';" onmouseout="this.style.borderColor='${theme.border}'; this.style.boxShadow='inset 0 0 30px rgba(0,0,0,0.5)';">
-                <div style="font-size: 2.5rem; margin-bottom: 0.75rem; color: ${theme.accentBright}; text-shadow: 0 0 15px rgba(136, 255, 187, 0.7);">${card.icon}</div>
-                <div style="font-family: 'Courier New', monospace; font-size: 1.1rem; font-weight: 700; color: ${theme.text}; margin-bottom: 0.5rem; letter-spacing: 0.1em; text-shadow: ${theme.terminalGlow};">${card.title}</div>
-                <div style="font-size: 0.9rem; color: ${theme.textMuted}; font-family: 'Courier New', monospace;">${card.subtitle}</div>
+              <button onclick="navigate('${card.id}')" style="background: rgba(15, 21, 16, 0.9); border: 2px solid ${theme.border}; border-radius: 4px; padding: 2.5rem 2rem; cursor: pointer; text-align: center; box-shadow: inset 0 0 40px rgba(0,0,0,0.5);" onmouseover="this.style.borderColor='${theme.accent}'; this.style.boxShadow='inset 0 0 40px rgba(0,0,0,0.5), ${theme.terminalGlow}';" onmouseout="this.style.borderColor='${theme.border}'; this.style.boxShadow='inset 0 0 40px rgba(0,0,0,0.5)';">
+                <div style="font-size: 4rem; margin-bottom: 1.25rem; color: ${theme.accentBright}; text-shadow: 0 0 20px rgba(136, 255, 187, 0.7);">${card.icon}</div>
+                <div style="font-family: 'Courier New', monospace; font-size: 1.5rem; font-weight: 700; color: ${theme.text}; margin-bottom: 0.75rem; letter-spacing: 0.12em; text-shadow: ${theme.terminalGlow};">${card.title}</div>
+                <div style="font-size: 1.1rem; color: ${theme.textMuted}; font-family: 'Courier New', monospace;">${card.subtitle}</div>
               </button>
             `).join('')}
           </div>
-          <footer style="margin-top: 1rem; padding-top: 0.5rem; border-top: 1px solid ${theme.border}; font-size: 1rem; color: ${theme.textMuted}; text-align: center; font-family: 'Courier New', monospace; letter-spacing: 0.1em;">
-            ═══════════════════════════════════════════<br/>
+          <footer style="margin-top: 3rem; padding-top: 1rem; border-top: 2px solid ${theme.border}; font-size: 1.1rem; color: ${theme.textMuted}; text-align: center; font-family: 'Courier New', monospace; letter-spacing: 0.1em;">
+            ════════════════════════════════════════════════════════════════<br/>
             Mate Precision Tooling Specifications · S17 MTX Reference Suite v1.0<br/>
-            ═══════════════════════════════════════════
+            ════════════════════════════════════════════════════════════════
           </footer>
         </div>
       `;
@@ -539,96 +539,97 @@
       }
 
       return `
-        <div style="max-width: 1400px; margin: 0 auto;">
-          <header style="border-bottom: 1px solid ${theme.border}; padding-bottom: 0.5rem; margin-bottom: 0.5rem;">
-            <h1 style="font-family: 'Courier New', monospace; font-size: 1.5rem; font-weight: 700; color: ${theme.accentBright}; text-shadow: ${theme.terminalGlow};">DIE HEIGHT CALCULATOR</h1>
-            <div style="font-size: 0.95rem; color: ${theme.text}; font-family: 'Courier New', monospace;">Thick Turret & Multitool Systems</div>
+        <div style="max-width: 1400px; margin: 0 auto; padding: 0.75rem 1.5rem; height: calc(100vh - 60px); display: flex; flex-direction: column;">
+          <header style="border-bottom: 2px solid ${theme.border}; padding-bottom: 0.5rem; margin-bottom: 0.75rem; flex-shrink: 0;">
+            <h1 style="font-family: 'Courier New', monospace; font-size: 1.75rem; font-weight: 700; color: ${theme.accentBright}; text-shadow: ${theme.terminalGlow}; margin: 0;">DIE HEIGHT CALCULATOR</h1>
+            <div style="font-size: 1rem; color: ${theme.text}; font-family: 'Courier New', monospace;">Thick Turret & Multitool Systems</div>
           </header>
-          
-          <div class="two-col-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-            <div style="background: rgba(15, 21, 16, 0.95); border: 1px solid ${theme.border}; border-radius: 2px; padding: 1rem; box-shadow: inset 0 0 20px rgba(0,0,0,0.5), ${theme.terminalGlow};">
-              <div style="font-family: 'Courier New', monospace; font-size: 1rem; font-weight: 600; color: ${theme.accent}; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.25rem; text-shadow: ${theme.terminalGlow};">▸ Die Selection</div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; flex-shrink: 0;">
+            <div style="background: rgba(15, 21, 16, 0.95); border: 2px solid ${theme.border}; border-radius: 4px; padding: 0.75rem 1rem; box-shadow: inset 0 0 30px rgba(0,0,0,0.5), ${theme.terminalGlow};">
+              <div style="font-family: 'Courier New', monospace; font-size: 1.1rem; font-weight: 600; color: ${theme.accent}; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; text-shadow: ${theme.terminalGlow};">▸ Die Selection</div>
               <div style="margin-bottom: 0.5rem;">
-                <label style="display: block; font-size: 0.95rem; font-weight: 500; color: ${theme.textSecondary}; margin-bottom: 0.4rem; font-family: 'Courier New', monospace;">Die Type</label>
-                <select id="dieType" style="width: 100%; padding: 0.5rem 0.75rem; font-family: 'Courier New', monospace; font-size: 1rem; background: ${theme.bgInput}; border: 1px solid ${theme.border}; border-radius: 2px; color: ${theme.text}; cursor: pointer;">
+                <label style="display: block; font-size: 1rem; font-weight: 500; color: ${theme.textSecondary}; margin-bottom: 0.25rem; font-family: 'Courier New', monospace;">Die Type</label>
+                <select id="dieType" style="width: 100%; padding: 0.5rem 0.75rem; font-family: 'Courier New', monospace; font-size: 1.1rem; background: ${theme.bgInput}; border: 2px solid ${theme.border}; border-radius: 4px; color: ${theme.text}; cursor: pointer;">
                   ${Object.entries(dieTypes).map(([key, val]) => `<option value="${key}" ${key === state.dieHeight.dieType ? 'selected' : ''}>${val.name}</option>`).join('')}
                 </select>
               </div>
-              <div style="background: ${theme.bgTertiary}; border: 1px solid ${theme.border}; border-radius: 2px; padding: 0.75rem; margin-top: 1rem;">
+              <div style="background: ${theme.bgTertiary}; border: 2px solid ${theme.border}; border-radius: 4px; padding: 0.5rem 0.75rem; margin-top: 0.5rem;">
                 ${[['New Height', `${die.newHeight.toFixed(2)}mm`], ['Grind Life', `${die.grindLife.toFixed(2)}mm`], ['Min Height', `${die.minHeight.toFixed(2)}mm`]].map(([label, value], i, arr) => `
-                  <div style="display: flex; justify-content: space-between; padding: 0.35rem 0; ${i < arr.length - 1 ? `border-bottom: 1px solid ${theme.border}` : ''}">
+                  <div style="display: flex; justify-content: space-between; padding: 0.25rem 0; ${i < arr.length - 1 ? `border-bottom: 1px solid ${theme.border}` : ''}">
                     <span style="font-size: 1rem; color: ${theme.textMuted}; font-family: 'Courier New', monospace;">${label}</span>
                     <span style="font-family: 'Courier New', monospace; font-size: 1.2rem; font-weight: 600; color: ${theme.text}; text-shadow: ${theme.terminalGlow};">${value}</span>
                   </div>
                 `).join('')}
               </div>
             </div>
-            
-            <div style="background: rgba(15, 21, 16, 0.95); border: 1px solid ${theme.border}; border-radius: 2px; padding: 1rem; box-shadow: inset 0 0 20px rgba(0,0,0,0.5), ${theme.terminalGlow};">
-              <div style="font-family: 'Courier New', monospace; font-size: 1rem; font-weight: 600; color: ${theme.accent}; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.25rem; text-shadow: ${theme.terminalGlow};">▸ Measurement</div>
+
+            <div style="background: rgba(15, 21, 16, 0.95); border: 2px solid ${theme.border}; border-radius: 4px; padding: 0.75rem 1rem; box-shadow: inset 0 0 30px rgba(0,0,0,0.5), ${theme.terminalGlow};">
+              <div style="font-family: 'Courier New', monospace; font-size: 1.1rem; font-weight: 600; color: ${theme.accent}; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; text-shadow: ${theme.terminalGlow};">▸ Measurement</div>
               <div style="margin-bottom: 0.5rem;">
-                <label style="display: block; font-size: 0.95rem; font-weight: 500; color: ${theme.textSecondary}; margin-bottom: 0.4rem; font-family: 'Courier New', monospace;">Measured Die Height (mm)</label>
-                <input type="number" id="measuredHeight" step="0.01" value="${state.dieHeight.measuredHeight}" placeholder="Enter measured height..." style="width: 100%; padding: 0.5rem 0.75rem; font-family: 'Courier New', monospace; font-size: 1rem; background: ${theme.bgInput}; border: 1px solid ${theme.border}; border-radius: 2px; color: ${theme.text}; box-sizing: border-box; text-shadow: ${theme.terminalGlow};">
+                <label style="display: block; font-size: 1rem; font-weight: 500; color: ${theme.textSecondary}; margin-bottom: 0.25rem; font-family: 'Courier New', monospace;">Measured Die Height (mm)</label>
+                <input type="number" id="measuredHeight" step="0.01" value="${state.dieHeight.measuredHeight}" placeholder="Enter measured height..." style="width: 100%; padding: 0.5rem 0.75rem; font-family: 'Courier New', monospace; font-size: 1.1rem; background: ${theme.bgInput}; border: 2px solid ${theme.border}; border-radius: 4px; color: ${theme.text}; box-sizing: border-box; text-shadow: ${theme.terminalGlow};">
               </div>
+            </div>
           </div>
-          
+
           ${result ? `
-            <div style="background: rgba(15, 21, 16, 0.95); border: 1px solid ${theme.border}; border-radius: 2px; padding: 0.75rem; margin-top: 0.75rem; box-shadow: inset 0 0 20px rgba(0,0,0,0.5), ${theme.terminalGlow};">
-              <div style="font-family: 'Courier New', monospace; font-size: 1rem; font-weight: 600; color: ${theme.accent}; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.25rem; text-shadow: ${theme.terminalGlow};">▸ Results</div>
-              
-              <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; margin-bottom: 0.5rem;">
-                <div style="background: ${result.materialRemoved < 0 ? theme.badBg : result.materialRemoved > die.grindLife * 0.8 ? theme.warnBg : theme.goodBg}; border: 1px solid ${result.materialRemoved < 0 ? theme.bad : result.materialRemoved > die.grindLife * 0.8 ? theme.warn : theme.good}; border-radius: 2px; padding: 0.5rem; text-align: center; box-shadow: 0 0 10px ${result.materialRemoved < 0 ? 'rgba(255,51,51,0.3)' : result.materialRemoved > die.grindLife * 0.8 ? 'rgba(255,204,0,0.3)' : 'rgba(0,255,0,0.3)'};">
-                  <div style="font-size: 0.85rem; font-weight: 600; color: ${theme.textMuted}; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem; font-family: 'Courier New', monospace;">Removed</div>
-                  <div style="font-family: 'Courier New', monospace; font-size: 1.75rem; font-weight: 700; color: ${result.materialRemoved < 0 ? theme.bad : result.materialRemoved > die.grindLife * 0.8 ? theme.warn : theme.good}; text-shadow: 0 0 10px currentColor;">
-                    ${result.materialRemoved.toFixed(2)}<span style="font-size: 1rem; color: ${theme.textMuted};">mm</span>
+            <div style="background: rgba(15, 21, 16, 0.95); border: 2px solid ${theme.border}; border-radius: 4px; padding: 0.75rem 1rem; margin-top: 0.75rem; box-shadow: inset 0 0 30px rgba(0,0,0,0.5), ${theme.terminalGlow}; flex: 1; display: flex; flex-direction: column; min-height: 0;">
+              <div style="font-family: 'Courier New', monospace; font-size: 1.1rem; font-weight: 600; color: ${theme.accent}; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; text-shadow: ${theme.terminalGlow};">▸ Results</div>
+
+              <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-bottom: 0.75rem;">
+                <div style="background: ${result.materialRemoved < 0 ? theme.badBg : result.materialRemoved > die.grindLife * 0.8 ? theme.warnBg : theme.goodBg}; border: 2px solid ${result.materialRemoved < 0 ? theme.bad : result.materialRemoved > die.grindLife * 0.8 ? theme.warn : theme.good}; border-radius: 4px; padding: 0.75rem; text-align: center; box-shadow: 0 0 15px ${result.materialRemoved < 0 ? 'rgba(255,51,51,0.3)' : result.materialRemoved > die.grindLife * 0.8 ? 'rgba(255,204,0,0.3)' : 'rgba(0,255,0,0.3)'};">
+                  <div style="font-size: 1.15rem; font-weight: 600; color: ${theme.textMuted}; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem; font-family: 'Courier New', monospace;">Removed</div>
+                  <div style="font-family: 'Courier New', monospace; font-size: 2.5rem; font-weight: 700; color: ${result.materialRemoved < 0 ? theme.bad : result.materialRemoved > die.grindLife * 0.8 ? theme.warn : theme.good}; text-shadow: 0 0 10px currentColor;">
+                    ${result.materialRemoved.toFixed(2)}<span style="font-size: 1.15rem; color: ${theme.textMuted};">mm</span>
                   </div>
                 </div>
-                <div style="background: ${result.lifeRemaining <= 0 ? theme.badBg : result.lifeRemaining <= 25 ? theme.warnBg : theme.goodBg}; border: 1px solid ${result.lifeRemaining <= 0 ? theme.bad : result.lifeRemaining <= 25 ? theme.warn : theme.good}; border-radius: 2px; padding: 0.5rem; text-align: center; box-shadow: 0 0 10px ${result.lifeRemaining <= 0 ? 'rgba(255,51,51,0.3)' : result.lifeRemaining <= 25 ? 'rgba(255,204,0,0.3)' : 'rgba(0,255,0,0.3)'};">
-                  <div style="font-size: 0.85rem; font-weight: 600; color: ${theme.textMuted}; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem; font-family: 'Courier New', monospace;">Life Left</div>
-                  <div style="font-family: 'Courier New', monospace; font-size: 1.75rem; font-weight: 700; color: ${result.lifeRemaining <= 0 ? theme.bad : result.lifeRemaining <= 25 ? theme.warn : theme.good}; text-shadow: 0 0 10px currentColor;">
-                    ${Math.round(result.lifeRemaining)}<span style="font-size: 1rem; color: ${theme.textMuted};">%</span>
+                <div style="background: ${result.lifeRemaining <= 0 ? theme.badBg : result.lifeRemaining <= 25 ? theme.warnBg : theme.goodBg}; border: 2px solid ${result.lifeRemaining <= 0 ? theme.bad : result.lifeRemaining <= 25 ? theme.warn : theme.good}; border-radius: 4px; padding: 0.75rem; text-align: center; box-shadow: 0 0 15px ${result.lifeRemaining <= 0 ? 'rgba(255,51,51,0.3)' : result.lifeRemaining <= 25 ? 'rgba(255,204,0,0.3)' : 'rgba(0,255,0,0.3)'};">
+                  <div style="font-size: 1.15rem; font-weight: 600; color: ${theme.textMuted}; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem; font-family: 'Courier New', monospace;">Life Left</div>
+                  <div style="font-family: 'Courier New', monospace; font-size: 2.5rem; font-weight: 700; color: ${result.lifeRemaining <= 0 ? theme.bad : result.lifeRemaining <= 25 ? theme.warn : theme.good}; text-shadow: 0 0 10px currentColor;">
+                    ${Math.round(result.lifeRemaining)}<span style="font-size: 1.15rem; color: ${theme.textMuted};">%</span>
                   </div>
                 </div>
-                <div style="background: ${result.shimNeeded > 0 ? theme.warnBg : theme.goodBg}; border: 1px solid ${result.shimNeeded > 0 ? theme.warn : theme.good}; border-radius: 2px; padding: 0.5rem; text-align: center; box-shadow: 0 0 10px ${result.shimNeeded > 0 ? 'rgba(255,204,0,0.3)' : 'rgba(0,255,0,0.3)'};">
-                  <div style="font-size: 0.85rem; font-weight: 600; color: ${theme.textMuted}; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem; font-family: 'Courier New', monospace;">Shim Req</div>
-                  <div style="font-family: 'Courier New', monospace; font-size: 1.75rem; font-weight: 700; color: ${result.shimNeeded > 0 ? theme.warn : theme.good}; text-shadow: 0 0 10px currentColor;">
-                    ${result.shimNeeded.toFixed(2)}<span style="font-size: 1rem; color: ${theme.textMuted};">mm</span>
+                <div style="background: ${result.shimNeeded > 0 ? theme.warnBg : theme.goodBg}; border: 2px solid ${result.shimNeeded > 0 ? theme.warn : theme.good}; border-radius: 4px; padding: 0.75rem; text-align: center; box-shadow: 0 0 15px ${result.shimNeeded > 0 ? 'rgba(255,204,0,0.3)' : 'rgba(0,255,0,0.3)'};">
+                  <div style="font-size: 1.15rem; font-weight: 600; color: ${theme.textMuted}; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem; font-family: 'Courier New', monospace;">Shim Req</div>
+                  <div style="font-family: 'Courier New', monospace; font-size: 2.5rem; font-weight: 700; color: ${result.shimNeeded > 0 ? theme.warn : theme.good}; text-shadow: 0 0 10px currentColor;">
+                    ${result.shimNeeded.toFixed(2)}<span style="font-size: 1.15rem; color: ${theme.textMuted};">mm</span>
                   </div>
                 </div>
-                <div style="background: ${theme.bgTertiary}; border: 2px solid ${theme.accent}; border-radius: 2px; padding: 0.5rem; text-align: center; box-shadow: ${theme.terminalGlow};">
-                  <div style="font-size: 0.85rem; font-weight: 600; color: ${theme.textMuted}; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem; font-family: 'Courier New', monospace;">Final Height</div>
-                  <div style="font-family: 'Courier New', monospace; font-size: 1.75rem; font-weight: 700; color: ${theme.accentBright}; text-shadow: 0 0 15px rgba(136, 255, 187, 0.7);">
-                    ${result.finalHeight.toFixed(2)}<span style="font-size: 1rem; color: ${theme.textMuted};">mm</span>
+                <div style="background: ${theme.bgTertiary}; border: 3px solid ${theme.accent}; border-radius: 4px; padding: 0.75rem; text-align: center; box-shadow: ${theme.terminalGlow};">
+                  <div style="font-size: 1.15rem; font-weight: 600; color: ${theme.textMuted}; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem; font-family: 'Courier New', monospace;">Final Height</div>
+                  <div style="font-family: 'Courier New', monospace; font-size: 2.5rem; font-weight: 700; color: ${theme.accentBright}; text-shadow: 0 0 15px rgba(136, 255, 187, 0.7);">
+                    ${result.finalHeight.toFixed(2)}<span style="font-size: 1.15rem; color: ${theme.textMuted};">mm</span>
                   </div>
-                  ${result.overBy !== 0 ? `<div style="font-size: 0.85rem; color: ${result.overBy > 0 ? theme.warn : theme.bad}; font-family: 'Courier New', monospace;">${result.overBy > 0 ? '+' : ''}${result.overBy.toFixed(2)}mm</div>` : ''}
+                  ${result.overBy !== 0 ? `<div style="font-size: 0.95rem; color: ${result.overBy > 0 ? theme.warn : theme.bad}; font-family: 'Courier New', monospace;">${result.overBy > 0 ? '+' : ''}${result.overBy.toFixed(2)}mm</div>` : ''}
                 </div>
               </div>
-              
-              <div style="background: ${theme.bgTertiary}; border: 3px solid ${theme.accent}; border-radius: 2px; padding: 1rem; text-align: center; box-shadow: ${theme.terminalGlow}, 0 0 30px rgba(51, 255, 102, 0.2); margin-bottom: 0.5rem;">
-                <div style="font-size: 1.1rem; font-weight: 600; color: ${theme.accentBright}; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; font-family: 'Courier New', monospace; text-shadow: ${theme.terminalGlow};">▸ RECOMMENDED SHIM COMBINATION</div>
-                <div style="font-family: 'Courier New', monospace; font-size: 2.5rem; font-weight: 700; color: ${theme.accentBright}; text-shadow: 0 0 20px rgba(136, 255, 187, 0.8); padding: 0.5rem 0;">
+
+              <div style="background: linear-gradient(180deg, rgba(0, 50, 25, 0.95) 0%, rgba(0, 35, 18, 0.98) 100%); border: 3px solid ${theme.accent}; border-radius: 6px; padding: 1.25rem 1.5rem; text-align: center; box-shadow: ${theme.terminalGlow}, 0 0 35px rgba(51, 255, 102, 0.25), inset 0 0 20px rgba(51, 255, 102, 0.05); margin-bottom: 0.5rem; flex: 1; display: flex; flex-direction: column; justify-content: center;">
+                <div style="font-size: 1.15rem; font-weight: 700; color: ${theme.accent}; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 0.5rem; font-family: 'Courier New', monospace; text-shadow: 0 0 10px rgba(136, 255, 187, 0.5);">▸▸ RECOMMENDED SHIM COMBINATION ◂◂</div>
+                <div style="font-family: 'Courier New', monospace; font-size: 3.25rem; font-weight: 700; color: ${theme.accentBright}; text-shadow: 0 0 20px rgba(136, 255, 187, 0.7), 0 0 40px rgba(51, 255, 102, 0.4); padding: 0.5rem 0; letter-spacing: 0.05em;">
                   ${result.shimCombo.shims.length > 0 ? result.shimCombo.shims.map(s => `${s.count} × ${s.size.toFixed(2)}mm`).join('  +  ') : 'No shims needed'}
                 </div>
-                <div style="font-size: 1.25rem; color: ${theme.text}; font-family: 'Courier New', monospace; text-shadow: ${theme.terminalGlow};">
-                  Stack Total: <span style="font-weight: 700; color: ${theme.accentBright};">${result.shimCombo.total.toFixed(2)}mm</span>
+                <div style="font-size: 1.4rem; color: ${theme.text}; font-family: 'Courier New', monospace; text-shadow: ${theme.terminalGlow};">
+                  Stack Total: <span style="font-weight: 700; color: ${theme.accentBright}; text-shadow: 0 0 10px rgba(136, 255, 187, 0.6);">${result.shimCombo.total.toFixed(2)}mm</span>
                 </div>
               </div>
-              
-              <div style="padding: 0.5rem 1rem; border-radius: 2px; font-size: 0.95rem; font-weight: 600; background: ${result.statusBg}; border: 2px solid ${result.statusColor}; color: ${result.statusColor}; font-family: 'Courier New', monospace; text-shadow: 0 0 10px currentColor; box-shadow: 0 0 15px ${result.statusColor}33;">
+
+              <div style="padding: 0.5rem 1rem; border-radius: 4px; font-size: 1rem; font-weight: 600; background: ${result.statusBg}; border: 2px solid ${result.statusColor}; color: ${result.statusColor}; font-family: 'Courier New', monospace; text-shadow: 0 0 10px currentColor; box-shadow: 0 0 15px ${result.statusColor}33; flex-shrink: 0;">
                 ${result.status === 'GOOD' ? '■ ' : result.status === 'PLAN REPLACEMENT' || result.status === 'CHECK MEASUREMENT' ? '▲ ' : '● '}${result.status}
               </div>
             </div>
           ` : ''}
-          
-          <div style="background: rgba(0, 40, 20, 0.95); border: 2px solid ${theme.accent}; border-radius: 2px; padding: 0.75rem; margin-top: 0.5rem; box-shadow: 0 0 20px rgba(51, 255, 102, 0.15);">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: ${state.dieHeight.showNotes ? '0.5rem' : '0'};">
-              <div style="font-family: 'Courier New', monospace; font-size: 0.95rem; font-weight: 600; color: ${theme.accentBright}; text-transform: uppercase; letter-spacing: 0.15em; text-shadow: ${theme.terminalGlow};">▸ NOTES</div>
-              <button onclick="toggleNotes('dieHeight')" style="padding: 0.5rem 1rem; background: ${theme.accent}; border: none; border-radius: 2px; color: #000; font-size: 1rem; font-weight: 700; cursor: pointer; font-family: 'Courier New', monospace;">
+
+          <div style="background: rgba(0, 40, 20, 0.95); border: 2px solid ${theme.accent}; border-radius: 4px; padding: 0.5rem 1rem; margin-top: 0.75rem; box-shadow: 0 0 20px rgba(51, 255, 102, 0.15); flex-shrink: 0;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div style="font-family: 'Courier New', monospace; font-size: 1rem; font-weight: 600; color: ${theme.accentBright}; text-transform: uppercase; letter-spacing: 0.15em; text-shadow: ${theme.terminalGlow};">▸ NOTES</div>
+              <button onclick="toggleNotes('dieHeight')" style="padding: 0.4rem 1rem; background: ${theme.accent}; border: none; border-radius: 4px; color: #000; font-size: 1rem; font-weight: 700; cursor: pointer; font-family: 'Courier New', monospace;">
                 ${state.dieHeight.showNotes ? 'HIDE' : 'SHOW'}
               </button>
             </div>
             ${state.dieHeight.showNotes ? `
-              <textarea id="dieHeightNotes" placeholder="Add notes..." style="width: 100%; height: 100px; padding: 0.75rem; font-size: 0.95rem; background: ${theme.bgInput}; border: 1px solid ${theme.border}; border-radius: 2px; color: ${theme.text}; font-family: 'Courier New', monospace; box-sizing: border-box; resize: vertical;">${state.dieHeight.notes}</textarea>
+              <textarea id="dieHeightNotes" placeholder="Add notes..." style="width: 100%; height: 80px; padding: 0.5rem; font-size: 1rem; background: ${theme.bgInput}; border: 2px solid ${theme.border}; border-radius: 4px; color: ${theme.text}; font-family: 'Courier New', monospace; box-sizing: border-box; resize: none; margin-top: 0.5rem;">${state.dieHeight.notes}</textarea>
             ` : ''}
           </div>
         </div>
@@ -659,45 +660,45 @@
       );
 
       return `
-        <div style="max-width: 1400px; margin: 0 auto;">
-          <header style="border-bottom: 1px solid ${theme.border}; padding-bottom: 0.5rem; margin-bottom: 0.5rem;">
-            <h1 style="font-family: 'Courier New', monospace; font-size: 1.5rem; font-weight: 700; color: ${theme.accentBright}; text-shadow: ${theme.terminalGlow};">DIE CLEARANCE CALCULATOR</h1>
-            <div style="font-size: 0.95rem; color: ${theme.text}; font-family: 'Courier New', monospace;">Textbook vs Empirical · S17 MTX Thick Turret</div>
+        <div style="max-width: 1400px; margin: 0 auto; padding: 0.75rem 1.5rem; height: calc(100vh - 60px); display: flex; flex-direction: column;">
+          <header style="border-bottom: 2px solid ${theme.border}; padding-bottom: 0.5rem; margin-bottom: 0.75rem; flex-shrink: 0;">
+            <h1 style="font-family: 'Courier New', monospace; font-size: 1.75rem; font-weight: 700; color: ${theme.accentBright}; text-shadow: ${theme.terminalGlow}; margin: 0;">DIE CLEARANCE CALCULATOR</h1>
+            <div style="font-size: 1rem; color: ${theme.text}; font-family: 'Courier New', monospace;">Textbook vs Empirical · S17 MTX Thick Turret</div>
           </header>
-          
-          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 0.75rem;">
+
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 0.75rem; flex-shrink: 0;">
             <div>
-              <label style="display: block; font-size: 0.95rem; font-weight: 500; color: ${theme.textSecondary}; margin-bottom: 0.4rem; font-family: 'Courier New', monospace;">Material</label>
-              <select id="clrMaterial" style="width: 100%; padding: 0.5rem 0.75rem; font-family: 'Courier New', monospace; font-size: 1rem; background: ${theme.bgInput}; border: 1px solid ${theme.border}; border-radius: 2px; color: ${theme.text}; cursor: pointer;">
+              <label style="display: block; font-size: 1rem; font-weight: 500; color: ${theme.textSecondary}; margin-bottom: 0.25rem; font-family: 'Courier New', monospace;">Material</label>
+              <select id="clrMaterial" style="width: 100%; padding: 0.5rem 0.75rem; font-family: 'Courier New', monospace; font-size: 1.1rem; background: ${theme.bgInput}; border: 2px solid ${theme.border}; border-radius: 4px; color: ${theme.text}; cursor: pointer;">
                 ${['Aluminium', 'Mild Steel', 'Stainless Steel', 'Copper/Brass'].map(m => `<option ${m === material ? 'selected' : ''}>${m}</option>`).join('')}
               </select>
             </div>
             <div>
-              <label style="display: block; font-size: 0.95rem; font-weight: 500; color: ${theme.textSecondary}; margin-bottom: 0.4rem; font-family: 'Courier New', monospace;">Thickness (mm)</label>
-              <input type="number" id="clrThickness" step="0.1" value="${thickness}" style="width: 100%; padding: 0.5rem 0.75rem; font-family: 'Courier New', monospace; font-size: 1rem; background: ${theme.bgInput}; border: 1px solid ${theme.border}; border-radius: 2px; color: ${theme.text}; box-sizing: border-box;">
+              <label style="display: block; font-size: 1rem; font-weight: 500; color: ${theme.textSecondary}; margin-bottom: 0.25rem; font-family: 'Courier New', monospace;">Thickness (mm)</label>
+              <input type="number" id="clrThickness" step="0.1" value="${thickness}" style="width: 100%; padding: 0.5rem 0.75rem; font-family: 'Courier New', monospace; font-size: 1.1rem; background: ${theme.bgInput}; border: 2px solid ${theme.border}; border-radius: 4px; color: ${theme.text}; box-sizing: border-box;">
             </div>
             <div>
-              <label style="display: block; font-size: 0.95rem; font-weight: 500; color: ${theme.textSecondary}; margin-bottom: 0.4rem; font-family: 'Courier New', monospace;">Operation</label>
-              <select id="clrOperation" style="width: 100%; padding: 0.5rem 0.75rem; font-family: 'Courier New', monospace; font-size: 1rem; background: ${theme.bgInput}; border: 1px solid ${theme.border}; border-radius: 2px; color: ${theme.text}; cursor: pointer;">
+              <label style="display: block; font-size: 1rem; font-weight: 500; color: ${theme.textSecondary}; margin-bottom: 0.25rem; font-family: 'Courier New', monospace;">Operation</label>
+              <select id="clrOperation" style="width: 100%; padding: 0.5rem 0.75rem; font-family: 'Courier New', monospace; font-size: 1.1rem; background: ${theme.bgInput}; border: 2px solid ${theme.border}; border-radius: 4px; color: ${theme.text}; cursor: pointer;">
                 ${['Piercing', 'Blanking', 'Slitting'].map(o => `<option ${o === operation ? 'selected' : ''}>${o}</option>`).join('')}
               </select>
             </div>
           </div>
-          
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 0.5rem;">
-            <div style="background: rgba(15, 21, 16, 0.95); border: 1px solid ${theme.border}; border-radius: 2px; padding: 0.75rem; box-shadow: inset 0 0 20px rgba(0,0,0,0.5), ${theme.terminalGlow};">
-              <div style="font-family: 'Courier New', monospace; font-size: 1rem; font-weight: 600; color: #44ccff; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.25rem; text-shadow: 0 0 10px rgba(0, 170, 255, 0.5);">▸ TEXTBOOK (Mate)</div>
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem;">
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 0.75rem; flex-shrink: 0;">
+            <div style="background: rgba(15, 21, 16, 0.95); border: 2px solid ${theme.border}; border-radius: 4px; padding: 1rem; box-shadow: inset 0 0 30px rgba(0,0,0,0.5), ${theme.terminalGlow};">
+              <div style="font-family: 'Courier New', monospace; font-size: 1.1rem; font-weight: 600; color: #44ccff; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; text-shadow: 0 0 10px rgba(0, 170, 255, 0.5);">▸ TEXTBOOK (Mate)</div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;">
                 <div>
-                  <div style="font-size: 0.9rem; color: ${theme.textMuted}; font-family: 'Courier New', monospace;">Clearance %</div>
-                  <div style="font-family: 'Courier New', monospace; font-size: 1.75rem; font-weight: 700; color: #44ccff; text-shadow: 0 0 15px rgba(0, 170, 255, 0.6);">${textbookPct}%</div>
+                  <div style="font-size: 1.15rem; color: ${theme.textMuted}; font-family: 'Courier New', monospace;">Clearance %</div>
+                  <div style="font-family: 'Courier New', monospace; font-size: 2.5rem; font-weight: 700; color: #44ccff; text-shadow: 0 0 15px rgba(0, 170, 255, 0.6);">${textbookPct}%</div>
                 </div>
                 <div>
-                  <div style="font-size: 0.9rem; color: ${theme.textMuted}; font-family: 'Courier New', monospace;">Die Clearance</div>
-                  <div style="font-family: 'Courier New', monospace; font-size: 1.75rem; font-weight: 700; color: ${theme.text}; text-shadow: 0 0 15px rgba(51, 255, 102, 0.4);">+${textbookMM}</div>
+                  <div style="font-size: 1.15rem; color: ${theme.textMuted}; font-family: 'Courier New', monospace;">Die Clearance</div>
+                  <div style="font-family: 'Courier New', monospace; font-size: 2.5rem; font-weight: 700; color: ${theme.text}; text-shadow: 0 0 15px rgba(51, 255, 102, 0.4);">+${textbookMM}</div>
                 </div>
               </div>
-              <div style="background: ${theme.bgTertiary}; padding: 0.5rem; border-radius: 2px; font-size: 0.95rem; font-family: 'Courier New', monospace;">
+              <div style="background: ${theme.bgTertiary}; padding: 0.75rem; border-radius: 4px; font-size: 1.1rem; font-family: 'Courier New', monospace;">
                 <span style="color: ${theme.good};">Min:${euromac.min}%</span>
                 <span style="color: ${theme.textMuted};"> │ </span>
                 <span style="color: #44ccff;">Rec:${euromac.rec}%</span>
@@ -705,21 +706,21 @@
                 <span style="color: ${theme.warn};">Max:${euromac.max}%</span>
               </div>
             </div>
-            
-            <div style="background: ${empiricalMatch ? 'rgba(0, 40, 20, 0.95)' : 'rgba(15, 21, 16, 0.95)'}; border: ${empiricalMatch ? '2px' : '1px'} solid ${empiricalMatch ? theme.accent : theme.border}; border-radius: 2px; padding: 0.75rem; box-shadow: ${empiricalMatch ? `0 0 20px rgba(51, 255, 102, 0.2)` : 'none'};">
-              <div style="font-family: 'Courier New', monospace; font-size: 1rem; font-weight: 600; color: ${theme.accentBright}; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.25rem; text-shadow: ${theme.terminalGlow};">▸ EMPIRICAL (S17 MTX)</div>
+
+            <div style="background: ${empiricalMatch ? 'rgba(0, 40, 20, 0.95)' : 'rgba(15, 21, 16, 0.95)'}; border: 2px solid ${empiricalMatch ? theme.accent : theme.border}; border-radius: 4px; padding: 1rem; box-shadow: ${empiricalMatch ? `0 0 20px rgba(51, 255, 102, 0.2)` : 'inset 0 0 30px rgba(0,0,0,0.5)'};">
+              <div style="font-family: 'Courier New', monospace; font-size: 1.1rem; font-weight: 600; color: ${theme.accentBright}; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; text-shadow: ${theme.terminalGlow};">▸ EMPIRICAL (S17 MTX)</div>
               ${empiricalMatch ? `
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;">
                   <div>
-                    <div style="font-size: 0.9rem; color: ${theme.textMuted}; font-family: 'Courier New', monospace;">Clearance %</div>
-                    <div style="font-family: 'Courier New', monospace; font-size: 1.75rem; font-weight: 700; color: ${theme.accentBright}; text-shadow: 0 0 15px rgba(136, 255, 187, 0.7);">${empiricalMatch.clearancePct}%</div>
+                    <div style="font-size: 1.15rem; color: ${theme.textMuted}; font-family: 'Courier New', monospace;">Clearance %</div>
+                    <div style="font-family: 'Courier New', monospace; font-size: 2.5rem; font-weight: 700; color: ${theme.accentBright}; text-shadow: 0 0 15px rgba(136, 255, 187, 0.7);">${empiricalMatch.clearancePct}%</div>
                   </div>
                   <div>
-                    <div style="font-size: 0.9rem; color: ${theme.textMuted}; font-family: 'Courier New', monospace;">Die Clearance</div>
-                    <div style="font-family: 'Courier New', monospace; font-size: 1.75rem; font-weight: 700; color: ${theme.accentBright}; text-shadow: 0 0 15px rgba(136, 255, 187, 0.7);">+${empiricalMatch.clearanceMM}</div>
+                    <div style="font-size: 1.15rem; color: ${theme.textMuted}; font-family: 'Courier New', monospace;">Die Clearance</div>
+                    <div style="font-family: 'Courier New', monospace; font-size: 2.5rem; font-weight: 700; color: ${theme.accentBright}; text-shadow: 0 0 15px rgba(136, 255, 187, 0.7);">+${empiricalMatch.clearanceMM}</div>
                   </div>
                 </div>
-                <div style="background: ${theme.bg}; padding: 0.5rem; border-radius: 2px; font-size: 0.95rem; font-family: 'Courier New', monospace;">
+                <div style="background: ${theme.bg}; padding: 0.75rem; border-radius: 4px; font-size: 1.1rem; font-family: 'Courier New', monospace;">
                   <span style="color: ${theme.accentBright};">${empiricalMatch.notes}</span>
                   ${empiricalMatch.verified ? `<span style="color: ${theme.good};"> ■</span>` : ''}
                   <span style="color: ${empiricalMatch.clearancePct < textbookPct ? theme.warn : theme.good}; margin-left: 0.5rem;">
@@ -727,59 +728,59 @@
                   </span>
                 </div>
               ` : `
-                <div style="color: ${theme.textMuted}; padding: 1rem; text-align: center; font-family: 'Courier New', monospace; font-size: 0.95rem;">
+                <div style="color: ${theme.textMuted}; padding: 1.5rem; text-align: center; font-family: 'Courier New', monospace; font-size: 1.1rem;">
                   No empirical data - add below
                 </div>
               `}
             </div>
           </div>
           
-          <div style="background: rgba(0, 40, 20, 0.95); border: 2px solid ${theme.accent}; border-radius: 2px; padding: 0.75rem; box-shadow: 0 0 20px rgba(51, 255, 102, 0.15);">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-              <div style="font-family: 'Courier New', monospace; font-size: 0.95rem; font-weight: 600; color: ${theme.accentBright}; text-transform: uppercase; letter-spacing: 0.15em; text-shadow: ${theme.terminalGlow};">▸ S17 MTX EMPIRICAL DATA</div>
-              <button onclick="toggleAddForm()" style="padding: 0.5rem 1rem; background: ${theme.accent}; border: none; border-radius: 2px; color: #000; font-size: 1rem; font-weight: 700; cursor: pointer; font-family: 'Courier New', monospace;">
+          <div style="background: rgba(0, 40, 20, 0.95); border: 2px solid ${theme.accent}; border-radius: 4px; padding: 0.75rem 1rem; box-shadow: 0 0 20px rgba(51, 255, 102, 0.15); flex: 1; overflow: hidden; display: flex; flex-direction: column; min-height: 0;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-shrink: 0;">
+              <div style="font-family: 'Courier New', monospace; font-size: 1.1rem; font-weight: 600; color: ${theme.accentBright}; text-transform: uppercase; letter-spacing: 0.15em; text-shadow: ${theme.terminalGlow};">▸ S17 MTX EMPIRICAL DATA</div>
+              <button onclick="toggleAddForm()" style="padding: 0.4rem 1rem; background: ${theme.accent}; border: none; border-radius: 4px; color: #000; font-size: 1rem; font-weight: 700; cursor: pointer; font-family: 'Courier New', monospace;">
                 ${state.clearance.showAddForm ? 'CANCEL' : '+ ADD ENTRY'}
               </button>
             </div>
-            
+
             ${state.clearance.showAddForm ? `
-              <div style="background: ${theme.bg}; padding: 1rem; border-radius: 2px; margin-bottom: 0.5rem; border: 1px solid ${theme.border};">
-                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; margin-bottom: 0.75rem;">
-                  <select id="newEntryMaterial" style="padding: 0.5rem; font-size: 1rem; background: ${theme.bgInput}; border: 1px solid ${theme.border}; border-radius: 2px; color: ${theme.text}; font-family: 'Courier New', monospace;">
+              <div style="background: ${theme.bg}; padding: 0.75rem; border-radius: 4px; margin-bottom: 0.5rem; border: 2px solid ${theme.border}; flex-shrink: 0;">
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; margin-bottom: 0.5rem;">
+                  <select id="newEntryMaterial" style="padding: 0.5rem; font-size: 1rem; background: ${theme.bgInput}; border: 2px solid ${theme.border}; border-radius: 4px; color: ${theme.text}; font-family: 'Courier New', monospace;">
                     ${['Aluminium', 'Mild Steel', 'Stainless Steel', 'Copper/Brass'].map(m => `<option ${m === state.clearance.newEntry.material ? 'selected' : ''}>${m}</option>`).join('')}
                   </select>
-                  <input type="number" id="newEntryThickness" step="0.1" value="${state.clearance.newEntry.thickness}" placeholder="Thickness (mm)" style="padding: 0.5rem; font-size: 1rem; background: ${theme.bgInput}; border: 1px solid ${theme.border}; border-radius: 2px; color: ${theme.text}; font-family: 'Courier New', monospace; box-sizing: border-box;">
-                  <select id="newEntryOperation" style="padding: 0.5rem; font-size: 1rem; background: ${theme.bgInput}; border: 1px solid ${theme.border}; border-radius: 2px; color: ${theme.text}; font-family: 'Courier New', monospace;">
+                  <input type="number" id="newEntryThickness" step="0.1" value="${state.clearance.newEntry.thickness}" placeholder="Thickness (mm)" style="padding: 0.5rem; font-size: 1rem; background: ${theme.bgInput}; border: 2px solid ${theme.border}; border-radius: 4px; color: ${theme.text}; font-family: 'Courier New', monospace; box-sizing: border-box;">
+                  <select id="newEntryOperation" style="padding: 0.5rem; font-size: 1rem; background: ${theme.bgInput}; border: 2px solid ${theme.border}; border-radius: 4px; color: ${theme.text}; font-family: 'Courier New', monospace;">
                     ${['Piercing', 'Blanking', 'Slitting', 'All'].map(o => `<option ${o === state.clearance.newEntry.operation ? 'selected' : ''}>${o}</option>`).join('')}
                   </select>
-                  <input type="number" id="newEntryClearance" step="0.01" value="${state.clearance.newEntry.clearanceMM}" placeholder="Clearance (mm)" style="padding: 0.5rem; font-size: 1rem; background: ${theme.bgInput}; border: 1px solid ${theme.border}; border-radius: 2px; color: ${theme.text}; font-family: 'Courier New', monospace; box-sizing: border-box;">
+                  <input type="number" id="newEntryClearance" step="0.01" value="${state.clearance.newEntry.clearanceMM}" placeholder="Clearance (mm)" style="padding: 0.5rem; font-size: 1rem; background: ${theme.bgInput}; border: 2px solid ${theme.border}; border-radius: 4px; color: ${theme.text}; font-family: 'Courier New', monospace; box-sizing: border-box;">
                 </div>
                 <div style="display: grid; grid-template-columns: 1fr auto; gap: 0.5rem;">
-                  <input type="text" id="newEntryNotes" value="${state.clearance.newEntry.notes}" placeholder="Notes (optional)" style="padding: 0.5rem; font-size: 1rem; background: ${theme.bgInput}; border: 1px solid ${theme.border}; border-radius: 2px; color: ${theme.text}; font-family: 'Courier New', monospace; box-sizing: border-box;">
-                  <button onclick="addEmpiricalEntry()" style="padding: 0.5rem 1.5rem; background: ${theme.accentBright}; border: none; border-radius: 2px; color: ${theme.bg}; font-size: 1rem; font-weight: 700; cursor: pointer; font-family: 'Courier New', monospace;">ADD</button>
+                  <input type="text" id="newEntryNotes" value="${state.clearance.newEntry.notes}" placeholder="Notes (optional)" style="padding: 0.5rem; font-size: 1rem; background: ${theme.bgInput}; border: 2px solid ${theme.border}; border-radius: 4px; color: ${theme.text}; font-family: 'Courier New', monospace; box-sizing: border-box;">
+                  <button onclick="addEmpiricalEntry()" style="padding: 0.5rem 1.5rem; background: ${theme.accentBright}; border: none; border-radius: 4px; color: ${theme.bg}; font-size: 1rem; font-weight: 700; cursor: pointer; font-family: 'Courier New', monospace;">ADD</button>
                 </div>
               </div>
             ` : ''}
-            
-            <div style="overflow-y: auto; max-height: 180px;">
+
+            <div style="overflow-y: auto; flex: 1; min-height: 0;">
               <table style="width: 100%; border-collapse: collapse; font-size: 1rem; font-family: 'Courier New', monospace;">
                 <thead>
                   <tr style="border-bottom: 2px solid ${theme.accent};">
                     ${['Material', 'Thickness', 'Operation', 'Clearance', '%', 'Notes', ''].map(h => `
-                      <th style="padding: 0.35rem; text-align: ${['Thickness', 'Operation', 'Clearance', '%', ''].includes(h) ? 'center' : 'left'}; color: ${theme.accentBright}; text-shadow: ${theme.terminalGlow};">${h}</th>
+                      <th style="padding: 0.4rem; text-align: ${['Thickness', 'Operation', 'Clearance', '%', ''].includes(h) ? 'center' : 'left'}; color: ${theme.accentBright}; text-shadow: ${theme.terminalGlow}; font-size: 1rem;">${h}</th>
                     `).join('')}
                   </tr>
                 </thead>
                 <tbody>
                   ${empiricalData.map(entry => `
                     <tr style="border-bottom: 1px solid ${theme.border};">
-                      <td style="padding: 0.5rem; color: ${theme.text};">${entry.material}</td>
-                      <td style="padding: 0.35rem; text-align: center; color: ${theme.text};">${entry.thickness}mm</td>
-                      <td style="padding: 0.35rem; text-align: center; color: ${theme.text};">${entry.operation}</td>
-                      <td style="padding: 0.35rem; text-align: center; color: ${theme.accentBright}; font-weight: 600; text-shadow: ${theme.terminalGlow};">${entry.clearanceMM}mm</td>
-                      <td style="padding: 0.35rem; text-align: center; color: ${theme.textMuted};">${entry.clearancePct}%</td>
-                      <td style="padding: 0.5rem; color: ${theme.textMuted};">${entry.notes} ${entry.verified ? `<span style="color: ${theme.good}; text-shadow: 0 0 5px rgba(0,255,0,0.5);">■</span>` : ''}</td>
-                      <td style="padding: 0.35rem; text-align: center;">
+                      <td style="padding: 0.4rem; color: ${theme.text}; font-size: 1rem;">${entry.material}</td>
+                      <td style="padding: 0.4rem; text-align: center; color: ${theme.text}; font-size: 1rem;">${entry.thickness}mm</td>
+                      <td style="padding: 0.4rem; text-align: center; color: ${theme.text}; font-size: 1rem;">${entry.operation}</td>
+                      <td style="padding: 0.4rem; text-align: center; color: ${theme.accentBright}; font-weight: 600; text-shadow: ${theme.terminalGlow}; font-size: 1.1rem;">${entry.clearanceMM}mm</td>
+                      <td style="padding: 0.4rem; text-align: center; color: ${theme.textMuted}; font-size: 1rem;">${entry.clearancePct}%</td>
+                      <td style="padding: 0.4rem; color: ${theme.textMuted}; font-size: 0.95rem;">${entry.notes} ${entry.verified ? `<span style="color: ${theme.good}; text-shadow: 0 0 5px rgba(0,255,0,0.5);">■</span>` : ''}</td>
+                      <td style="padding: 0.4rem; text-align: center;">
                         <button onclick="deleteEmpiricalEntry(${entry.id})" style="background: transparent; border: none; color: ${theme.bad}; cursor: pointer; font-size: 1.2rem; text-shadow: 0 0 5px rgba(255,51,51,0.5);">×</button>
                       </td>
                     </tr>
@@ -788,16 +789,16 @@
               </table>
             </div>
           </div>
-          
-          <div style="background: rgba(0, 40, 20, 0.95); border: 2px solid ${theme.accent}; border-radius: 2px; padding: 0.75rem; margin-top: 0.5rem; box-shadow: 0 0 20px rgba(51, 255, 102, 0.15);">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: ${state.clearance.showNotes ? '0.5rem' : '0'};">
-              <div style="font-family: 'Courier New', monospace; font-size: 0.95rem; font-weight: 600; color: ${theme.accentBright}; text-transform: uppercase; letter-spacing: 0.15em; text-shadow: ${theme.terminalGlow};">▸ NOTES</div>
-              <button onclick="toggleNotes('clearance')" style="padding: 0.5rem 1rem; background: ${theme.accent}; border: none; border-radius: 2px; color: #000; font-size: 1rem; font-weight: 700; cursor: pointer; font-family: 'Courier New', monospace;">
+
+          <div style="background: rgba(0, 40, 20, 0.95); border: 2px solid ${theme.accent}; border-radius: 4px; padding: 0.5rem 1rem; margin-top: 0.75rem; box-shadow: 0 0 20px rgba(51, 255, 102, 0.15); flex-shrink: 0;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div style="font-family: 'Courier New', monospace; font-size: 1rem; font-weight: 600; color: ${theme.accentBright}; text-transform: uppercase; letter-spacing: 0.15em; text-shadow: ${theme.terminalGlow};">▸ NOTES</div>
+              <button onclick="toggleNotes('clearance')" style="padding: 0.4rem 1rem; background: ${theme.accent}; border: none; border-radius: 4px; color: #000; font-size: 1rem; font-weight: 700; cursor: pointer; font-family: 'Courier New', monospace;">
                 ${state.clearance.showNotes ? 'HIDE' : 'SHOW'}
               </button>
             </div>
             ${state.clearance.showNotes ? `
-              <textarea id="clearanceNotes" placeholder="Add notes..." style="width: 100%; height: 100px; padding: 0.75rem; font-size: 0.95rem; background: ${theme.bgInput}; border: 1px solid ${theme.border}; border-radius: 2px; color: ${theme.text}; font-family: 'Courier New', monospace; box-sizing: border-box; resize: vertical;">${state.clearance.notes}</textarea>
+              <textarea id="clearanceNotes" placeholder="Add notes..." style="width: 100%; height: 80px; padding: 0.5rem; font-size: 1rem; background: ${theme.bgInput}; border: 2px solid ${theme.border}; border-radius: 4px; color: ${theme.text}; font-family: 'Courier New', monospace; box-sizing: border-box; resize: none; margin-top: 0.5rem;">${state.clearance.notes}</textarea>
             ` : ''}
           </div>
         </div>
