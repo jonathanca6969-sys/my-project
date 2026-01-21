@@ -155,6 +155,9 @@
         tooltip.style.opacity = '0';
       });
       
+      let lastWheelTime = 0;
+      let consecutiveFastScrolls = 0;
+
       input.addEventListener('wheel', (e) => {
         e.preventDefault();
 
@@ -171,20 +174,28 @@
           return;
         }
 
-        // Calculate acceleration factor based on range
+        // Detect scroll velocity for finesse vs speed
+        const now = Date.now();
+        const timeDelta = now - lastWheelTime;
+        lastWheelTime = now;
+        const scrollSpeed = Math.abs(e.deltaY) / Math.max(timeDelta, 1);
+        const isSlowScroll = scrollSpeed < 1.2 || timeDelta > 80;
+        const isFastScroll = scrollSpeed >= 1.2 && timeDelta <= 80;
+
+        // Track consecutive fast scrolls to detect sustained vs jerk
+        if (isFastScroll) {
+          consecutiveFastScrolls++;
+        } else {
+          consecutiveFastScrolls = 0;
+        }
+
+        // Calculate acceleration factor - linear ramp based on consecutive fast scrolls
         let stepMultiplier = 1;
-        if (min !== null && max !== null) {
+        if (isFastScroll && min !== null && max !== null) {
           const valueCount = Math.floor((max - min) / numStep);
           if (valueCount > 3) {
-            // Accelerate when more than 3 possible values
-            // 4-10 values: 2x, 11-50 values: 5x, 51+ values: 10x
-            if (valueCount <= 10) {
-              stepMultiplier = 2;
-            } else if (valueCount <= 50) {
-              stepMultiplier = 5;
-            } else {
-              stepMultiplier = 10;
-            }
+            // Linear ramp: starts at 25x, increases by 20x per consecutive fast scroll, caps at 120x
+            stepMultiplier = Math.min(25 + (consecutiveFastScrolls - 1) * 20, 120);
           }
         }
 
@@ -250,7 +261,7 @@
     // State management
     let currentPage = 'home';
     let state = {
-      dieHeight: { dieType: '31.7x30.15', measuredHeight: '', currentShims: '0', notes: '', showNotes: false },
+      dieHeight: { dieType: '31.7x30.15', measuredHeight: '30.15', currentShims: '0', notes: '', showNotes: false },
       clearance: { material: 'Aluminium', thickness: 3.0, operation: 'Piercing', showAddForm: false, newEntry: { material: 'Aluminium', thickness: '', operation: 'Piercing', clearanceMM: '', notes: '' }, notes: '', showNotes: false },
       tonnage: { 
         punchTypes: [{ id: 1, shape: 'Round', smallerDim: '3.2', largerDim: '', cornerRadius: '', quantity: '12' }],
@@ -1229,7 +1240,11 @@
       // Die Height
       const dieType = document.getElementById('dieType');
       
-      if (dieType) dieType.addEventListener('change', (e) => { state.dieHeight.dieType = e.target.value; render(); });
+      if (dieType) dieType.addEventListener('change', (e) => {
+        state.dieHeight.dieType = e.target.value;
+        state.dieHeight.measuredHeight = dieTypes[e.target.value].newHeight.toFixed(2);
+        render();
+      });
       
       setupScrollableInput('measuredHeight', '0.01', 0, 50, dieTypes[state.dieHeight.dieType].newHeight, (val, doRender) => { state.dieHeight.measuredHeight = val; if (doRender) render(); });
       setupScrollableInput('currentShims', '0.01', 0, 10, 0, (val, doRender) => { state.dieHeight.currentShims = val; if (doRender) render(); });
