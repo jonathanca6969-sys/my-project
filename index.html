@@ -155,14 +155,17 @@
         tooltip.style.opacity = '0';
       });
       
+      let lastWheelTime = 0;
+      let consecutiveFastScrolls = 0;
+
       input.addEventListener('wheel', (e) => {
         e.preventDefault();
-        
+
         const isEmpty = input.value === '' || input.value === null;
         const isZero = parseFloat(input.value) === 0;
         const useBase = (isEmpty || isZero) && baseValue !== null;
         let numValue = useBase ? parseFloat(baseValue) : (parseFloat(input.value) || 0);
-        
+
         if (useBase) {
           input.value = parseFloat(baseValue).toFixed(decimals);
           if (onUpdate) onUpdate(input.value, false);
@@ -170,22 +173,48 @@
           applyScale();
           return;
         }
-        
+
+        // Detect scroll velocity for finesse vs speed
+        const now = Date.now();
+        const timeDelta = now - lastWheelTime;
+        lastWheelTime = now;
+        const scrollSpeed = Math.abs(e.deltaY) / Math.max(timeDelta, 1);
+        const isSlowScroll = scrollSpeed < 1.2 || timeDelta > 80;
+        const isFastScroll = scrollSpeed >= 1.2 && timeDelta <= 80;
+
+        // Track consecutive fast scrolls to detect sustained vs jerk
+        if (isFastScroll) {
+          consecutiveFastScrolls++;
+        } else {
+          consecutiveFastScrolls = 0;
+        }
+
+        // Calculate acceleration factor - linear ramp based on consecutive fast scrolls
+        let stepMultiplier = 1;
+        if (isFastScroll && min !== null && max !== null) {
+          const valueCount = Math.floor((max - min) / numStep);
+          if (valueCount > 3) {
+            // Linear ramp: starts at 25x, increases by 20x per consecutive fast scroll, caps at 120x
+            stepMultiplier = Math.min(25 + (consecutiveFastScrolls - 1) * 20, 120);
+          }
+        }
+
+        const effectiveStep = numStep * stepMultiplier;
         const canGoUp = max === null || numValue + numStep <= max;
         const canGoDown = min === null || numValue - numStep >= min;
-        
+
         let newValue;
         if (e.deltaY < 0 && canGoUp) {
-          newValue = numValue + numStep;
+          newValue = numValue + effectiveStep;
         } else if (e.deltaY > 0 && canGoDown) {
-          newValue = numValue - numStep;
+          newValue = numValue - effectiveStep;
         } else {
           return;
         }
-        
+
         if (max !== null) newValue = Math.min(newValue, max);
         if (min !== null) newValue = Math.max(newValue, min);
-        
+
         input.value = newValue.toFixed(decimals);
         if (onUpdate) onUpdate(input.value, false);
         updateTooltip();
@@ -1212,7 +1241,11 @@
       // Die Height
       const dieType = document.getElementById('dieType');
       
-      if (dieType) dieType.addEventListener('change', (e) => { state.dieHeight.dieType = e.target.value; render(); });
+      if (dieType) dieType.addEventListener('change', (e) => {
+        state.dieHeight.dieType = e.target.value;
+        state.dieHeight.measuredHeight = dieTypes[e.target.value].newHeight.toFixed(2);
+        render();
+      });
       
       setupScrollableInput('measuredHeight', '0.01', 0, 50, dieTypes[state.dieHeight.dieType].newHeight, (val, doRender) => { state.dieHeight.measuredHeight = val; if (doRender) render(); });
       setupScrollableInput('currentShims', '0.01', 0, 10, 0, (val, doRender) => { state.dieHeight.currentShims = val; if (doRender) render(); });
