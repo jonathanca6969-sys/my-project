@@ -956,57 +956,59 @@
             
             <div style="min-width: 0; display: flex; flex-direction: column; min-height: 0; overflow-y: auto;">
               ${result ? `
-                <div style="background: ${result.statusColor}15; border: 2px solid ${result.statusColor}; border-radius: 4px; padding: 0.7rem; margin-bottom: 0.35rem; box-shadow: 0 0 20px ${result.statusColor}33;">
+                <div style="background: ${result.statusColor}15; border: 3px solid ${result.statusColor}; border-radius: 6px; padding: 1.05rem; margin-bottom: 0.5rem; box-shadow: 0 0 30px ${result.statusColor}33; flex-shrink: 0;">
                   <div style="display: flex; justify-content: space-between; align-items: center;">
                     <div>
-                      <div style="font-family: 'Courier New', monospace; font-size: 2.5rem; font-weight: 700; color: ${result.statusColor}; text-shadow: 0 0 15px ${result.statusColor};">${result.peakTonnage} MT</div>
-                      <div style="font-size: 1.4rem; color: ${theme.textMuted}; font-family: 'Courier New', monospace;">Peak (${result.pinsInPeakGroup} pin${result.pinsInPeakGroup > 1 ? 's' : ''} simultaneous)</div>
+                      <div style="font-family: 'Courier New', monospace; font-size: 3.75rem; font-weight: 700; color: ${result.statusColor}; text-shadow: 0 0 20px ${result.statusColor};">${result.peakTonnage} MT</div>
+                      <div style="font-size: 2.1rem; color: ${theme.textMuted}; font-family: 'Courier New', monospace;">Peak (${result.pinsInPeakGroup} pin${result.pinsInPeakGroup > 1 ? 's' : ''} simultaneous)</div>
                     </div>
-                    <div style="padding: 0.7rem 1rem; background: ${result.statusColor}; border-radius: 4px; font-weight: 700; font-size: 1.3rem; color: #000; font-family: 'Courier New', monospace; box-shadow: 0 0 15px ${result.statusColor};">${result.status}</div>
+                    <div style="padding: 1.05rem 1.5rem; background: ${result.statusColor}; border-radius: 6px; font-weight: 700; font-size: 2rem; color: #000; font-family: 'Courier New', monospace; box-shadow: 0 0 20px ${result.statusColor};">${result.status}</div>
                   </div>
-                  <div style="margin-top: 1rem;">
-                    <div style="display: flex; justify-content: space-between; font-size: 1.3rem; margin-bottom: 0.25rem; font-family: 'Courier New', monospace;">
+                  <div style="margin-top: 1.5rem;">
+                    <div style="display: flex; justify-content: space-between; font-size: 2rem; margin-bottom: 0.4rem; font-family: 'Courier New', monospace;">
                       <span style="color: ${theme.text};">${result.capacityUsed}% of ${s.machineCapacity}MT</span>
                       <span style="color: ${theme.warn}; text-shadow: 0 0 5px rgba(255,204,0,0.5);">80% safe</span>
                     </div>
-                    <div style="height: 8px; background: ${theme.bgTertiary}; border-radius: 4px; overflow: hidden; position: relative; border: 2px solid ${theme.border};">
-                      <div style="position: absolute; left: 80%; top: 0; bottom: 0; width: 2px; background: ${theme.warn}; z-index: 2; box-shadow: 0 0 5px rgba(255,204,0,0.5);"></div>
-                      <div style="width: ${Math.min(parseFloat(result.capacityUsed), 100)}%; height: 100%; background: ${result.statusColor}; box-shadow: 0 0 10px ${result.statusColor};"></div>
+                    <div style="height: 12px; background: ${theme.bgTertiary}; border-radius: 6px; overflow: hidden; position: relative; border: 3px solid ${theme.border};">
+                      <div style="position: absolute; left: 80%; top: 0; bottom: 0; width: 3px; background: ${theme.warn}; z-index: 2; box-shadow: 0 0 8px rgba(255,204,0,0.5);"></div>
+                      <div style="width: ${Math.min(parseFloat(result.capacityUsed), 100)}%; height: 100%; background: ${result.statusColor}; box-shadow: 0 0 15px ${result.statusColor};"></div>
                     </div>
                   </div>
                 </div>
                 
-                <div style="background: rgba(15, 21, 16, 0.95); border: 2px solid ${theme.border}; border-radius: 4px; padding: 0.7rem; margin-bottom: 0.35rem; box-shadow: inset 0 0 20px rgba(0,0,0,0.5), ${theme.terminalGlow};">
-                  <div style="font-family: 'Courier New', monospace; font-size: 1.4rem; font-weight: 600; color: ${theme.accent}; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.25rem; text-shadow: ${theme.terminalGlow};">▸ Breakdown</div>
-                  ${result.punchResults.map((p, idx) => `
-                    <div style="display: flex; justify-content: space-between; padding: 0.7rem 0; ${idx < result.punchResults.length - 1 ? `border-bottom: 1px solid ${theme.border};` : ''}">
-                      <div>
-                        <span style="font-weight: 500; color: ${theme.text}; font-family: 'Courier New', monospace;">${p.shape}</span>
-                        <span style="color: ${theme.textMuted}; margin-left: 0.5rem; font-size: 1.4rem; font-family: 'Courier New', monospace;">⌀${p.dimension}mm × ${p.quantity}</span>
+                <div style="flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 0.25rem;">
+                  <div style="background: rgba(15, 21, 16, 0.95); border: 2px solid ${theme.border}; border-radius: 4px; padding: 0.5rem; box-shadow: inset 0 0 20px rgba(0,0,0,0.5), ${theme.terminalGlow};">
+                    <div style="font-family: 'Courier New', monospace; font-size: 1.2rem; font-weight: 600; color: ${theme.accent}; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.2rem; text-shadow: ${theme.terminalGlow};">▸ Breakdown</div>
+                    ${result.punchResults.map((p, idx) => `
+                      <div style="display: flex; justify-content: space-between; padding: 0.4rem 0; ${idx < result.punchResults.length - 1 ? `border-bottom: 1px solid ${theme.border};` : ''}">
+                        <div>
+                          <span style="font-weight: 500; color: ${theme.text}; font-family: 'Courier New', monospace; font-size: 1.2rem;">${p.shape}</span>
+                          <span style="color: ${theme.textMuted}; margin-left: 0.5rem; font-size: 1.2rem; font-family: 'Courier New', monospace;">⌀${p.dimension}mm × ${p.quantity}</span>
+                        </div>
+                        <div style="text-align: right;">
+                          <div style="font-weight: 600; color: ${theme.good}; font-family: 'Courier New', monospace; text-shadow: 0 0 8px rgba(0,255,0,0.5); font-size: 1.2rem;">${p.typeTotalTonnage} MT</div>
+                          <div style="font-size: 1.1rem; color: ${theme.textMuted}; font-family: 'Courier New', monospace;">(${p.tonnageWithShear} ea)</div>
+                        </div>
                       </div>
-                      <div style="text-align: right;">
-                        <div style="font-weight: 600; color: ${theme.good}; font-family: 'Courier New', monospace; text-shadow: 0 0 8px rgba(0,255,0,0.5);">${p.typeTotalTonnage} MT</div>
-                        <div style="font-size: 1.3rem; color: ${theme.textMuted}; font-family: 'Courier New', monospace;">(${p.tonnageWithShear} ea)</div>
-                      </div>
+                    `).join('')}
+                    <div style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 2px solid ${theme.accent}; display: flex; justify-content: space-between;">
+                      <span style="font-weight: 600; color: ${theme.text}; font-family: 'Courier New', monospace; font-size: 1.2rem;">Total (${result.totalPins} pins)</span>
+                      <span style="font-weight: 700; font-size: 1.2rem; color: ${theme.good}; font-family: 'Courier New', monospace; text-shadow: 0 0 10px rgba(0,255,0,0.5);">${result.totalTonnage} MT</span>
                     </div>
-                  `).join('')}
-                  <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 2px solid ${theme.accent}; display: flex; justify-content: space-between;">
-                    <span style="font-weight: 600; color: ${theme.text}; font-family: 'Courier New', monospace;">Total (${result.totalPins} pins)</span>
-                    <span style="font-weight: 700; font-size: 1.3rem; color: ${theme.good}; font-family: 'Courier New', monospace; text-shadow: 0 0 10px rgba(0,255,0,0.5);">${result.totalTonnage} MT</span>
                   </div>
-                </div>
-                
-                <div style="background: rgba(15, 21, 16, 0.95); border: 2px solid ${theme.border}; border-radius: 4px; padding: 1rem; box-shadow: inset 0 0 20px rgba(0,0,0,0.5), ${theme.terminalGlow};">
-                  <div style="font-family: 'Courier New', monospace; font-size: 1.4rem; font-weight: 600; color: ${theme.accent}; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.25rem; text-shadow: ${theme.terminalGlow};">▸ Reference</div>
-                  <div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px solid ${theme.border};">
-                    <span style="color: ${theme.textMuted}; font-size: 1.4rem; font-family: 'Courier New', monospace;">Shear Strength</span>
-                    <span style="font-weight: 600; font-family: 'Courier New', monospace; color: ${theme.text};">${result.shearStrength} Kgf/mm²</span>
-                  </div>
-                  <div style="display: flex; justify-content: space-between; padding: 0.35rem 0;">
-                    <span style="color: ${theme.textMuted}; font-size: 1.4rem; font-family: 'Courier New', monospace;">Shear Factor</span>
-                    <span style="font-weight: 600; color: ${s.shearTable !== 'None (Flat)' ? theme.good : theme.textMuted}; font-family: 'Courier New', monospace; text-shadow: ${s.shearTable !== 'None (Flat)' ? '0 0 8px rgba(0,255,0,0.5)' : 'none'};">
-                      ${result.shearFactor} ${s.shearTable !== 'None (Flat)' ? `(-${result.tonnageReduction}%)` : ''}
-                    </span>
+
+                  <div style="background: rgba(15, 21, 16, 0.95); border: 2px solid ${theme.border}; border-radius: 4px; padding: 0.5rem; box-shadow: inset 0 0 20px rgba(0,0,0,0.5), ${theme.terminalGlow};">
+                    <div style="font-family: 'Courier New', monospace; font-size: 1.2rem; font-weight: 600; color: ${theme.accent}; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.2rem; text-shadow: ${theme.terminalGlow};">▸ Reference</div>
+                    <div style="display: flex; justify-content: space-between; padding: 0.25rem 0; border-bottom: 1px solid ${theme.border};">
+                      <span style="color: ${theme.textMuted}; font-size: 1.2rem; font-family: 'Courier New', monospace;">Shear Strength</span>
+                      <span style="font-weight: 600; font-family: 'Courier New', monospace; color: ${theme.text}; font-size: 1.2rem;">${result.shearStrength} Kgf/mm²</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 0.25rem 0;">
+                      <span style="color: ${theme.textMuted}; font-size: 1.2rem; font-family: 'Courier New', monospace;">Shear Factor</span>
+                      <span style="font-weight: 600; color: ${s.shearTable !== 'None (Flat)' ? theme.good : theme.textMuted}; font-family: 'Courier New', monospace; text-shadow: ${s.shearTable !== 'None (Flat)' ? '0 0 8px rgba(0,255,0,0.5)' : 'none'}; font-size: 1.2rem;">
+                        ${result.shearFactor} ${s.shearTable !== 'None (Flat)' ? `(-${result.tonnageReduction}%)` : ''}
+                      </span>
+                    </div>
                   </div>
                 </div>
               ` : `
@@ -1015,27 +1017,27 @@
                 </div>
               `}
 
-              <div style="background: rgba(15, 21, 16, 0.95); border: 2px solid ${theme.border}; border-radius: 4px; padding: 1rem 1.25rem; margin-top: 0.5rem; box-shadow: inset 0 0 30px rgba(0,0,0,0.5), ${theme.terminalGlow}; flex-shrink: 0;">
-                <div style="font-family: 'Courier New', monospace; font-size: 1.3rem; font-weight: 600; color: ${theme.accent}; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; text-shadow: ${theme.terminalGlow};">▸ Stagger (Optional)</div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem;">
+              <div style="background: rgba(15, 21, 16, 0.95); border: 2px solid ${theme.border}; border-radius: 4px; padding: 0.6rem 0.8rem; margin-top: 0.35rem; box-shadow: inset 0 0 30px rgba(0,0,0,0.5), ${theme.terminalGlow}; flex-shrink: 0;">
+                <div style="font-family: 'Courier New', monospace; font-size: 1.1rem; font-weight: 600; color: ${theme.accent}; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.3rem; text-shadow: ${theme.terminalGlow};">▸ Stagger (Optional)</div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.4rem;">
                   <div>
-                    <label style="display: block; font-size: 1.4rem; color: ${theme.textSecondary}; margin-bottom: 0.25rem; font-family: 'Courier New', monospace;">Height (mm)</label>
-                    <input type="number" id="staggerHeight" step="0.1" value="${s.staggerHeight}" placeholder="0" style="width: 100%; padding: 0.7rem 1rem; font-family: 'Courier New', monospace; font-size: 1.3rem; background: ${theme.bgInput}; border: 2px solid ${theme.border}; border-radius: 4px; color: ${theme.text}; box-sizing: border-box;">
+                    <label style="display: block; font-size: 1.1rem; color: ${theme.textSecondary}; margin-bottom: 0.15rem; font-family: 'Courier New', monospace;">Height (mm)</label>
+                    <input type="number" id="staggerHeight" step="0.1" value="${s.staggerHeight}" placeholder="0" style="width: 100%; padding: 0.5rem 0.7rem; font-family: 'Courier New', monospace; font-size: 1.1rem; background: ${theme.bgInput}; border: 2px solid ${theme.border}; border-radius: 4px; color: ${theme.text}; box-sizing: border-box;">
                   </div>
                   <div>
-                    <label style="display: block; font-size: 1.4rem; color: ${theme.textSecondary}; margin-bottom: 0.25rem; font-family: 'Courier New', monospace;">Pins Per Group</label>
-                    <input type="number" id="pinsPerGroup" step="1" value="${s.pinsPerGroup}" placeholder="All" style="width: 100%; padding: 0.7rem 1rem; font-family: 'Courier New', monospace; font-size: 1.3rem; background: ${theme.bgInput}; border: 2px solid ${theme.border}; border-radius: 4px; color: ${theme.text}; box-sizing: border-box;">
+                    <label style="display: block; font-size: 1.1rem; color: ${theme.textSecondary}; margin-bottom: 0.15rem; font-family: 'Courier New', monospace;">Pins/Group</label>
+                    <input type="number" id="pinsPerGroup" step="1" value="${s.pinsPerGroup}" placeholder="All" style="width: 100%; padding: 0.5rem 0.7rem; font-family: 'Courier New', monospace; font-size: 1.1rem; background: ${theme.bgInput}; border: 2px solid ${theme.border}; border-radius: 4px; color: ${theme.text}; box-sizing: border-box;">
                   </div>
                   <div>
-                    <label style="display: block; font-size: 1.4rem; color: ${theme.textSecondary}; margin-bottom: 0.25rem; font-family: 'Courier New', monospace;">Groups</label>
-                    <input type="number" id="amountOfGroups" step="1" value="${s.amountOfGroups || ''}" placeholder="1" style="width: 100%; padding: 0.7rem 1rem; font-family: 'Courier New', monospace; font-size: 1.3rem; background: ${theme.bgInput}; border: 2px solid ${theme.border}; border-radius: 4px; color: ${theme.text}; box-sizing: border-box;">
+                    <label style="display: block; font-size: 1.1rem; color: ${theme.textSecondary}; margin-bottom: 0.15rem; font-family: 'Courier New', monospace;">Groups</label>
+                    <input type="number" id="amountOfGroups" step="1" value="${s.amountOfGroups || ''}" placeholder="1" style="width: 100%; padding: 0.5rem 0.7rem; font-family: 'Courier New', monospace; font-size: 1.1rem; background: ${theme.bgInput}; border: 2px solid ${theme.border}; border-radius: 4px; color: ${theme.text}; box-sizing: border-box;">
                   </div>
                 </div>
               </div>
 
-              <div style="background: rgba(15, 21, 16, 0.95); border: 2px solid ${theme.border}; border-radius: 4px; padding: 1rem 1.25rem; margin-top: 0.5rem; box-shadow: inset 0 0 30px rgba(0,0,0,0.5), ${theme.terminalGlow}; flex-shrink: 0;">
-                <div style="font-family: 'Courier New', monospace; font-size: 1.3rem; font-weight: 600; color: ${theme.accent}; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; text-shadow: ${theme.terminalGlow};">▸ Machine</div>
-                <select id="machineCapacity" style="width: 100%; padding: 0.7rem 1rem; font-family: 'Courier New', monospace; font-size: 1.3rem; background: ${theme.bgInput}; border: 2px solid ${theme.border}; border-radius: 4px; color: ${theme.text};">
+              <div style="background: rgba(15, 21, 16, 0.95); border: 2px solid ${theme.border}; border-radius: 4px; padding: 0.6rem 0.8rem; margin-top: 0.35rem; box-shadow: inset 0 0 30px rgba(0,0,0,0.5), ${theme.terminalGlow}; flex-shrink: 0;">
+                <div style="font-family: 'Courier New', monospace; font-size: 1.1rem; font-weight: 600; color: ${theme.accent}; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.3rem; text-shadow: ${theme.terminalGlow};">▸ Machine</div>
+                <select id="machineCapacity" style="width: 100%; padding: 0.5rem 0.7rem; font-family: 'Courier New', monospace; font-size: 1.1rem; background: ${theme.bgInput}; border: 2px solid ${theme.border}; border-radius: 4px; color: ${theme.text};">
                   <option value="20" ${s.machineCapacity === '20' ? 'selected' : ''}>20 MT (S17 MTX)</option>
                   <option value="24" ${s.machineCapacity === '24' ? 'selected' : ''}>24 MT</option>
                   <option value="30" ${s.machineCapacity === '30' ? 'selected' : ''}>30 MT</option>
