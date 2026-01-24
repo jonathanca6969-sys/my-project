@@ -261,15 +261,18 @@
     // State management
     let currentPage = 'home';
     let state = {
-      dieHeight: { dieType: '12.7x20', measuredHeight: '20.00', currentShims: '0', notes: '', showNotes: false },
-      clearance: { material: 'Aluminium', thickness: 3.0, operation: 'Piercing', showAddForm: false, newEntry: { material: 'Aluminium', thickness: '', operation: 'Piercing', clearanceMM: '', notes: '' }, notes: '', showNotes: false },
-      tonnage: { 
+      dieHeight: { dieType: '12.7x20', measuredHeight: '20.00', currentShims: '0', notes: [], showNotes: false, showAddNote: false, editingNoteId: null },
+      clearance: { material: 'Aluminium', thickness: 3.0, operation: 'Piercing', showAddForm: false, newEntry: { material: 'Aluminium', thickness: '', operation: 'Piercing', clearanceMM: '', notes: '' }, notes: [], showNotes: false, showAddNote: false, editingNoteId: null },
+      tonnage: {
         punchTypes: [{ id: 1, shape: 'Round', smallerDim: '3.2', largerDim: '', cornerRadius: '', quantity: '12' }],
         thickness: '3.0', materialCategory: 'Aluminium', materialGrade: '5005 H34',
-        staggerHeight: '', pinsPerGroup: '', amountOfGroups: '', shearTable: 'Mate (1.5mm)', machineCapacity: '20', notes: '', showNotes: false
+        staggerHeight: '', pinsPerGroup: '', amountOfGroups: '', shearTable: 'Mate (1.5mm)', machineCapacity: '20', notes: [], showNotes: false, showAddNote: false, editingNoteId: null
       },
-      sbr: { toolStyle: 'Thick Turret', toolType: 'Ultra/Original/Inch (C)', materialThickness: 1.6, actualSBR: 20, activeImage: 0, notes: '', showNotes: false }
+      sbr: { toolStyle: 'Thick Turret', toolType: 'Ultra/Original/Inch (C)', materialThickness: 1.6, actualSBR: 20, activeImage: 0, notes: [], showNotes: false, showAddNote: false, editingNoteId: null }
     };
+
+    // Editing state for empirical data
+    let editingEmpiricalId = null;
 
     let empiricalData = [
       { id: 1, material: 'Aluminium', thickness: 3.0, operation: 'Slitting', clearanceMM: 0.4, clearancePct: 13.3, notes: '60x5 slitter - good results', verified: true },
@@ -491,6 +494,72 @@
       `;
     }
 
+    function renderNotesBox(page, containerStyle = '') {
+      const s = state[page];
+      const notes = s.notes || [];
+      const hasNotes = notes.length > 0;
+
+      return `
+        <div style="background: rgba(0, 40, 20, 0.95); border: 2px solid ${theme.accent}; border-radius: 4px; padding: 0.7rem 1rem; box-shadow: 0 0 20px rgba(51, 255, 102, 0.15); ${containerStyle}">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;">
+            <div style="font-family: 'Courier New', monospace; font-size: 1.2rem; font-weight: 600; color: ${theme.accentBright}; text-transform: uppercase; letter-spacing: 0.15em; text-shadow: ${theme.terminalGlow};">▸ NOTES ${hasNotes ? '(' + notes.length + ')' : ''}</div>
+            <button onclick="toggleNotes('${page}')" style="padding: 0.3rem 0.8rem; background: ${theme.accent}; border: none; border-radius: 4px; color: #000; font-size: 1.1rem; font-weight: 700; cursor: pointer; font-family: 'Courier New', monospace;">
+              ${s.showNotes ? 'HIDE' : 'SHOW'}
+            </button>
+          </div>
+          ${s.showNotes ? `
+            <div style="margin-top: 0.5rem; display: flex; flex-direction: column; flex: 1; min-height: 0;">
+              <div style="display: flex; justify-content: flex-end; margin-bottom: 0.35rem; flex-shrink: 0;">
+                <button onclick="toggleAddNote('${page}')" style="padding: 0.3rem 0.8rem; background: ${s.showAddNote ? theme.warn : theme.accentBright}; border: none; border-radius: 4px; color: #000; font-size: 1.1rem; font-weight: 700; cursor: pointer; font-family: 'Courier New', monospace;">
+                  ${s.showAddNote ? 'CANCEL' : '+ ADD ENTRY'}
+                </button>
+              </div>
+
+              ${s.showAddNote ? `
+                <div style="background: ${theme.bg}; padding: 0.7rem; border-radius: 4px; margin-bottom: 0.5rem; border: 2px solid ${theme.border}; flex-shrink: 0;">
+                  <input type="text" id="newNoteTitle_${page}" placeholder="Title" style="width: 100%; padding: 0.5rem; font-size: 1.2rem; background: ${theme.bgInput}; border: 2px solid ${theme.border}; border-radius: 4px; color: ${theme.text}; font-family: 'Courier New', monospace; box-sizing: border-box; margin-bottom: 0.35rem;">
+                  <textarea id="newNoteContent_${page}" placeholder="Content (optional)" style="width: 100%; height: 60px; padding: 0.5rem; font-size: 1.1rem; background: ${theme.bgInput}; border: 2px solid ${theme.border}; border-radius: 4px; color: ${theme.text}; font-family: 'Courier New', monospace; box-sizing: border-box; resize: none; margin-bottom: 0.35rem;"></textarea>
+                  <button onclick="addNote('${page}')" style="width: 100%; padding: 0.5rem; background: ${theme.accentBright}; border: none; border-radius: 4px; color: ${theme.bg}; font-size: 1.1rem; font-weight: 700; cursor: pointer; font-family: 'Courier New', monospace;">ADD</button>
+                </div>
+              ` : ''}
+
+              <div style="overflow-y: auto; flex: 1; min-height: 0;">
+                ${hasNotes ? notes.map(note => `
+                  ${s.editingNoteId === note.id ? `
+                    <div style="background: ${theme.bg}; padding: 0.7rem; border-radius: 4px; margin-bottom: 0.35rem; border: 2px solid ${theme.warn};">
+                      <input type="text" id="editNoteTitle_${page}_${note.id}" value="${note.title}" style="width: 100%; padding: 0.5rem; font-size: 1.2rem; background: ${theme.bgInput}; border: 2px solid ${theme.border}; border-radius: 4px; color: ${theme.text}; font-family: 'Courier New', monospace; box-sizing: border-box; margin-bottom: 0.35rem;">
+                      <textarea id="editNoteContent_${page}_${note.id}" style="width: 100%; height: 60px; padding: 0.5rem; font-size: 1.1rem; background: ${theme.bgInput}; border: 2px solid ${theme.border}; border-radius: 4px; color: ${theme.text}; font-family: 'Courier New', monospace; box-sizing: border-box; resize: none; margin-bottom: 0.35rem;">${note.content}</textarea>
+                      <div style="display: flex; gap: 0.35rem;">
+                        <button onclick="saveEditNote('${page}', ${note.id})" style="flex: 1; padding: 0.4rem; background: ${theme.good}; border: none; border-radius: 4px; color: #000; font-size: 1.1rem; font-weight: 700; cursor: pointer; font-family: 'Courier New', monospace;">SAVE</button>
+                        <button onclick="cancelEditNote('${page}')" style="flex: 1; padding: 0.4rem; background: ${theme.textMuted}; border: none; border-radius: 4px; color: #000; font-size: 1.1rem; font-weight: 700; cursor: pointer; font-family: 'Courier New', monospace;">CANCEL</button>
+                      </div>
+                    </div>
+                  ` : `
+                    <div style="background: ${theme.bgTertiary}; padding: 0.5rem 0.7rem; border-radius: 4px; margin-bottom: 0.35rem; border: 1px solid ${theme.border};">
+                      <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div style="flex: 1;">
+                          <div style="font-family: 'Courier New', monospace; font-size: 1.15rem; font-weight: 600; color: ${theme.accentBright}; margin-bottom: 0.2rem;">${note.title}</div>
+                          ${note.content ? `<div style="font-family: 'Courier New', monospace; font-size: 1rem; color: ${theme.textMuted}; white-space: pre-wrap;">${note.content}</div>` : ''}
+                        </div>
+                        <div style="display: flex; gap: 0.25rem; flex-shrink: 0; margin-left: 0.5rem;">
+                          <button onclick="startEditNote('${page}', ${note.id})" style="padding: 0.2rem 0.5rem; background: ${theme.warn}; border: none; border-radius: 3px; color: #000; font-size: 1rem; cursor: pointer; font-family: 'Courier New', monospace;">✎</button>
+                          <button onclick="deleteNote('${page}', ${note.id})" style="padding: 0.2rem 0.5rem; background: ${theme.bad}; border: none; border-radius: 3px; color: #fff; font-size: 1rem; cursor: pointer; font-family: 'Courier New', monospace;">×</button>
+                        </div>
+                      </div>
+                    </div>
+                  `}
+                `).join('') : `
+                  <div style="color: ${theme.textMuted}; padding: 1rem; text-align: center; font-family: 'Courier New', monospace; font-size: 1.1rem;">
+                    No notes - click ADD ENTRY to create one
+                  </div>
+                `}
+              </div>
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }
+
     function renderFooter() {
       return `
         <footer style="margin-top: 0.5rem; padding-top: 0.25rem; border-top: 1px solid ${theme.border}; font-size: 0.9rem; color: ${theme.textMuted}; text-align: center; font-family: 'Courier New', monospace; letter-spacing: 0.1em;">
@@ -650,17 +719,7 @@
             </div>
           ` : ''}
 
-          <div style="background: rgba(0, 40, 20, 0.95); border: 2px solid ${theme.accent}; border-radius: 4px; padding: 0.7rem 1rem; margin-top: 0.75rem; box-shadow: 0 0 20px rgba(51, 255, 102, 0.15); flex-shrink: 0;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <div style="font-family: 'Courier New', monospace; font-size: 1.4rem; font-weight: 600; color: ${theme.accentBright}; text-transform: uppercase; letter-spacing: 0.15em; text-shadow: ${theme.terminalGlow};">▸ NOTES</div>
-              <button onclick="toggleNotes('dieHeight')" style="padding: 0.4rem 1rem; background: ${theme.accent}; border: none; border-radius: 4px; color: #000; font-size: 1.4rem; font-weight: 700; cursor: pointer; font-family: 'Courier New', monospace;">
-                ${state.dieHeight.showNotes ? 'HIDE' : 'SHOW'}
-              </button>
-            </div>
-            ${state.dieHeight.showNotes ? `
-              <textarea id="dieHeightNotes" placeholder="Add notes..." style="width: 100%; height: 80px; padding: 0.7rem; font-size: 1.4rem; background: ${theme.bgInput}; border: 2px solid ${theme.border}; border-radius: 4px; color: ${theme.text}; font-family: 'Courier New', monospace; box-sizing: border-box; resize: none; margin-top: 0.5rem;">${state.dieHeight.notes}</textarea>
-            ` : ''}
-          </div>
+          ${renderNotesBox('dieHeight', 'margin-top: 0.75rem; flex-shrink: 0; max-height: 250px; display: flex; flex-direction: column;')}
         </div>
       `;
     }
@@ -764,7 +823,7 @@
             </div>
           </div>
           
-          <div style="background: rgba(0, 40, 20, 0.95); border: 2px solid ${theme.accent}; border-radius: 4px; padding: 1rem 1.25rem; box-shadow: 0 0 20px rgba(51, 255, 102, 0.15); flex: 1; overflow: hidden; display: flex; flex-direction: column; min-height: 0;">
+          <div style="background: rgba(0, 40, 20, 0.95); border: 2px solid ${theme.accent}; border-radius: 4px; padding: 1rem 1.25rem; box-shadow: 0 0 20px rgba(51, 255, 102, 0.15); flex: 1 1 auto; overflow: hidden; display: flex; flex-direction: column; min-height: 100px;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-shrink: 0;">
               <div style="font-family: 'Courier New', monospace; font-size: 1.3rem; font-weight: 600; color: ${theme.accentBright}; text-transform: uppercase; letter-spacing: 0.15em; text-shadow: ${theme.terminalGlow};">▸ S17 MTX EMPIRICAL DATA</div>
               <button onclick="toggleAddForm()" style="padding: 0.4rem 1rem; background: ${theme.accent}; border: none; border-radius: 4px; color: #000; font-size: 1.4rem; font-weight: 700; cursor: pointer; font-family: 'Courier New', monospace;">
@@ -801,16 +860,42 @@
                   </tr>
                 </thead>
                 <tbody>
-                  ${empiricalData.map(entry => `
+                  ${empiricalData.map(entry => editingEmpiricalId === entry.id ? `
+                    <tr style="border-bottom: 2px solid ${theme.warn}; background: ${theme.bg};">
+                      <td style="padding: 0.3rem;">
+                        <select id="editMaterial_${entry.id}" style="width: 100%; padding: 0.3rem; font-size: 1.1rem; background: ${theme.bgInput}; border: 1px solid ${theme.border}; border-radius: 3px; color: ${theme.text}; font-family: 'Courier New', monospace;">
+                          ${['Aluminium', 'Mild Steel', 'Stainless Steel', 'Copper/Brass'].map(m => `<option ${m === entry.material ? 'selected' : ''}>${m}</option>`).join('')}
+                        </select>
+                      </td>
+                      <td style="padding: 0.3rem;"><input type="number" id="editThickness_${entry.id}" step="0.1" value="${entry.thickness}" style="width: 100%; padding: 0.3rem; font-size: 1.1rem; background: ${theme.bgInput}; border: 1px solid ${theme.border}; border-radius: 3px; color: ${theme.text}; font-family: 'Courier New', monospace; box-sizing: border-box;"></td>
+                      <td style="padding: 0.3rem;">
+                        <select id="editOperation_${entry.id}" style="width: 100%; padding: 0.3rem; font-size: 1.1rem; background: ${theme.bgInput}; border: 1px solid ${theme.border}; border-radius: 3px; color: ${theme.text}; font-family: 'Courier New', monospace;">
+                          ${['Piercing', 'Blanking', 'Slitting', 'All'].map(o => `<option ${o === entry.operation ? 'selected' : ''}>${o}</option>`).join('')}
+                        </select>
+                      </td>
+                      <td style="padding: 0.3rem;"><input type="number" id="editClearance_${entry.id}" step="0.01" value="${entry.clearanceMM}" style="width: 100%; padding: 0.3rem; font-size: 1.1rem; background: ${theme.bgInput}; border: 1px solid ${theme.border}; border-radius: 3px; color: ${theme.text}; font-family: 'Courier New', monospace; box-sizing: border-box;"></td>
+                      <td style="padding: 0.3rem; text-align: center; color: ${theme.textMuted}; font-size: 1.1rem;">auto</td>
+                      <td style="padding: 0.3rem;"><input type="text" id="editNotes_${entry.id}" value="${entry.notes}" style="width: 100%; padding: 0.3rem; font-size: 1rem; background: ${theme.bgInput}; border: 1px solid ${theme.border}; border-radius: 3px; color: ${theme.text}; font-family: 'Courier New', monospace; box-sizing: border-box;"></td>
+                      <td style="padding: 0.3rem; text-align: center;">
+                        <div style="display: flex; gap: 0.2rem;">
+                          <button onclick="saveEditEmpiricalEntry(${entry.id})" style="background: ${theme.good}; border: none; color: #000; cursor: pointer; font-size: 1.1rem; padding: 0.2rem 0.4rem; border-radius: 3px;">✓</button>
+                          <button onclick="cancelEditEmpiricalEntry()" style="background: ${theme.textMuted}; border: none; color: #000; cursor: pointer; font-size: 1.1rem; padding: 0.2rem 0.4rem; border-radius: 3px;">✕</button>
+                        </div>
+                      </td>
+                    </tr>
+                  ` : `
                     <tr style="border-bottom: 1px solid ${theme.border};">
-                      <td style="padding: 0.4rem; color: ${theme.text}; font-size: 1.4rem;">${entry.material}</td>
-                      <td style="padding: 0.4rem; text-align: center; color: ${theme.text}; font-size: 1.4rem;">${entry.thickness}mm</td>
-                      <td style="padding: 0.4rem; text-align: center; color: ${theme.text}; font-size: 1.4rem;">${entry.operation}</td>
-                      <td style="padding: 0.4rem; text-align: center; color: ${theme.accentBright}; font-weight: 600; text-shadow: ${theme.terminalGlow}; font-size: 1.3rem;">${entry.clearanceMM}mm</td>
-                      <td style="padding: 0.4rem; text-align: center; color: ${theme.textMuted}; font-size: 1.4rem;">${entry.clearancePct}%</td>
-                      <td style="padding: 0.4rem; color: ${theme.textMuted}; font-size: 0.95rem;">${entry.notes} ${entry.verified ? `<span style="color: ${theme.good}; text-shadow: 0 0 5px rgba(0,255,0,0.5);">■</span>` : ''}</td>
+                      <td style="padding: 0.4rem; color: ${theme.text}; font-size: 1.2rem;">${entry.material}</td>
+                      <td style="padding: 0.4rem; text-align: center; color: ${theme.text}; font-size: 1.2rem;">${entry.thickness}mm</td>
+                      <td style="padding: 0.4rem; text-align: center; color: ${theme.text}; font-size: 1.2rem;">${entry.operation}</td>
+                      <td style="padding: 0.4rem; text-align: center; color: ${theme.accentBright}; font-weight: 600; text-shadow: ${theme.terminalGlow}; font-size: 1.2rem;">${entry.clearanceMM}mm</td>
+                      <td style="padding: 0.4rem; text-align: center; color: ${theme.textMuted}; font-size: 1.2rem;">${entry.clearancePct}%</td>
+                      <td style="padding: 0.4rem; color: ${theme.textMuted}; font-size: 0.9rem;">${entry.notes} ${entry.verified ? `<span style="color: ${theme.good}; text-shadow: 0 0 5px rgba(0,255,0,0.5);">■</span>` : ''}</td>
                       <td style="padding: 0.4rem; text-align: center;">
-                        <button onclick="deleteEmpiricalEntry(${entry.id})" style="background: transparent; border: none; color: ${theme.bad}; cursor: pointer; font-size: 1.4rem; text-shadow: 0 0 5px rgba(255,51,51,0.5);">×</button>
+                        <div style="display: flex; gap: 0.2rem; justify-content: center;">
+                          <button onclick="startEditEmpiricalEntry(${entry.id})" style="background: transparent; border: none; color: ${theme.warn}; cursor: pointer; font-size: 1.2rem;">✎</button>
+                          <button onclick="deleteEmpiricalEntry(${entry.id})" style="background: transparent; border: none; color: ${theme.bad}; cursor: pointer; font-size: 1.2rem; text-shadow: 0 0 5px rgba(255,51,51,0.5);">×</button>
+                        </div>
                       </td>
                     </tr>
                   `).join('')}
@@ -819,17 +904,7 @@
             </div>
           </div>
 
-          <div style="background: rgba(0, 40, 20, 0.95); border: 2px solid ${theme.accent}; border-radius: 4px; padding: 0.7rem 1rem; margin-top: 0.75rem; box-shadow: 0 0 20px rgba(51, 255, 102, 0.15); flex-shrink: 0;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <div style="font-family: 'Courier New', monospace; font-size: 1.4rem; font-weight: 600; color: ${theme.accentBright}; text-transform: uppercase; letter-spacing: 0.15em; text-shadow: ${theme.terminalGlow};">▸ NOTES</div>
-              <button onclick="toggleNotes('clearance')" style="padding: 0.4rem 1rem; background: ${theme.accent}; border: none; border-radius: 4px; color: #000; font-size: 1.4rem; font-weight: 700; cursor: pointer; font-family: 'Courier New', monospace;">
-                ${state.clearance.showNotes ? 'HIDE' : 'SHOW'}
-              </button>
-            </div>
-            ${state.clearance.showNotes ? `
-              <textarea id="clearanceNotes" placeholder="Add notes..." style="width: 100%; height: 80px; padding: 0.7rem; font-size: 1.4rem; background: ${theme.bgInput}; border: 2px solid ${theme.border}; border-radius: 4px; color: ${theme.text}; font-family: 'Courier New', monospace; box-sizing: border-box; resize: none; margin-top: 0.5rem;">${state.clearance.notes}</textarea>
-            ` : ''}
-          </div>
+          ${renderNotesBox('clearance', 'margin-top: 0.75rem; flex-shrink: 0; max-height: 350px; display: flex; flex-direction: column;')}
         </div>
       `;
     }
@@ -1015,45 +1090,35 @@
                 </div>
               `}
 
-              <div style="background: rgba(15, 21, 16, 0.95); border: 2px solid ${theme.border}; border-radius: 4px; padding: 1rem 1.25rem; margin-top: 0.5rem; box-shadow: inset 0 0 30px rgba(0,0,0,0.5), ${theme.terminalGlow}; flex-shrink: 0;">
-                <div style="font-family: 'Courier New', monospace; font-size: 1.3rem; font-weight: 600; color: ${theme.accent}; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; text-shadow: ${theme.terminalGlow};">▸ Stagger (Optional)</div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem;">
+              <div style="background: rgba(15, 21, 16, 0.95); border: 2px solid ${theme.border}; border-radius: 4px; padding: 0.7rem 1rem; margin-top: 0.35rem; box-shadow: inset 0 0 30px rgba(0,0,0,0.5), ${theme.terminalGlow}; flex-shrink: 0;">
+                <div style="font-family: 'Courier New', monospace; font-size: 1.2rem; font-weight: 600; color: ${theme.accent}; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.35rem; text-shadow: ${theme.terminalGlow};">▸ Stagger (Optional)</div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.4rem;">
                   <div>
-                    <label style="display: block; font-size: 1.4rem; color: ${theme.textSecondary}; margin-bottom: 0.25rem; font-family: 'Courier New', monospace;">Height (mm)</label>
-                    <input type="number" id="staggerHeight" step="0.1" value="${s.staggerHeight}" placeholder="0" style="width: 100%; padding: 0.7rem 1rem; font-family: 'Courier New', monospace; font-size: 1.3rem; background: ${theme.bgInput}; border: 2px solid ${theme.border}; border-radius: 4px; color: ${theme.text}; box-sizing: border-box;">
+                    <label style="display: block; font-size: 1.1rem; color: ${theme.textSecondary}; margin-bottom: 0.15rem; font-family: 'Courier New', monospace;">Height (mm)</label>
+                    <input type="number" id="staggerHeight" step="0.1" value="${s.staggerHeight}" placeholder="0" style="width: 100%; padding: 0.5rem 0.7rem; font-family: 'Courier New', monospace; font-size: 1.1rem; background: ${theme.bgInput}; border: 2px solid ${theme.border}; border-radius: 4px; color: ${theme.text}; box-sizing: border-box;">
                   </div>
                   <div>
-                    <label style="display: block; font-size: 1.4rem; color: ${theme.textSecondary}; margin-bottom: 0.25rem; font-family: 'Courier New', monospace;">Pins Per Group</label>
-                    <input type="number" id="pinsPerGroup" step="1" value="${s.pinsPerGroup}" placeholder="All" style="width: 100%; padding: 0.7rem 1rem; font-family: 'Courier New', monospace; font-size: 1.3rem; background: ${theme.bgInput}; border: 2px solid ${theme.border}; border-radius: 4px; color: ${theme.text}; box-sizing: border-box;">
+                    <label style="display: block; font-size: 1.1rem; color: ${theme.textSecondary}; margin-bottom: 0.15rem; font-family: 'Courier New', monospace;">Pins/Group</label>
+                    <input type="number" id="pinsPerGroup" step="1" value="${s.pinsPerGroup}" placeholder="All" style="width: 100%; padding: 0.5rem 0.7rem; font-family: 'Courier New', monospace; font-size: 1.1rem; background: ${theme.bgInput}; border: 2px solid ${theme.border}; border-radius: 4px; color: ${theme.text}; box-sizing: border-box;">
                   </div>
                   <div>
-                    <label style="display: block; font-size: 1.4rem; color: ${theme.textSecondary}; margin-bottom: 0.25rem; font-family: 'Courier New', monospace;">Groups</label>
-                    <input type="number" id="amountOfGroups" step="1" value="${s.amountOfGroups || ''}" placeholder="1" style="width: 100%; padding: 0.7rem 1rem; font-family: 'Courier New', monospace; font-size: 1.3rem; background: ${theme.bgInput}; border: 2px solid ${theme.border}; border-radius: 4px; color: ${theme.text}; box-sizing: border-box;">
+                    <label style="display: block; font-size: 1.1rem; color: ${theme.textSecondary}; margin-bottom: 0.15rem; font-family: 'Courier New', monospace;">Groups</label>
+                    <input type="number" id="amountOfGroups" step="1" value="${s.amountOfGroups || ''}" placeholder="1" style="width: 100%; padding: 0.5rem 0.7rem; font-family: 'Courier New', monospace; font-size: 1.1rem; background: ${theme.bgInput}; border: 2px solid ${theme.border}; border-radius: 4px; color: ${theme.text}; box-sizing: border-box;">
                   </div>
                 </div>
               </div>
 
-              <div style="background: rgba(15, 21, 16, 0.95); border: 2px solid ${theme.border}; border-radius: 4px; padding: 1rem 1.25rem; margin-top: 0.5rem; box-shadow: inset 0 0 30px rgba(0,0,0,0.5), ${theme.terminalGlow}; flex-shrink: 0;">
-                <div style="font-family: 'Courier New', monospace; font-size: 1.3rem; font-weight: 600; color: ${theme.accent}; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; text-shadow: ${theme.terminalGlow};">▸ Machine</div>
-                <select id="machineCapacity" style="width: 100%; padding: 0.7rem 1rem; font-family: 'Courier New', monospace; font-size: 1.3rem; background: ${theme.bgInput}; border: 2px solid ${theme.border}; border-radius: 4px; color: ${theme.text};">
+              <div style="background: rgba(15, 21, 16, 0.95); border: 2px solid ${theme.border}; border-radius: 4px; padding: 0.7rem 1rem; margin-top: 0.35rem; box-shadow: inset 0 0 30px rgba(0,0,0,0.5), ${theme.terminalGlow}; flex-shrink: 0;">
+                <div style="font-family: 'Courier New', monospace; font-size: 1.2rem; font-weight: 600; color: ${theme.accent}; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.35rem; text-shadow: ${theme.terminalGlow};">▸ Machine</div>
+                <select id="machineCapacity" style="width: 100%; padding: 0.5rem 0.7rem; font-family: 'Courier New', monospace; font-size: 1.2rem; background: ${theme.bgInput}; border: 2px solid ${theme.border}; border-radius: 4px; color: ${theme.text};">
                   <option value="20" ${s.machineCapacity === '20' ? 'selected' : ''}>20 MT (S17 MTX)</option>
                   <option value="24" ${s.machineCapacity === '24' ? 'selected' : ''}>24 MT</option>
                   <option value="30" ${s.machineCapacity === '30' ? 'selected' : ''}>30 MT</option>
                 </select>
               </div>
+
+              ${renderNotesBox('tonnage', 'margin-top: 0.35rem; flex: 1; display: flex; flex-direction: column; min-height: 60px;')}
             </div>
-          </div>
-          
-          <div style="background: rgba(0, 40, 20, 0.85); border: 2px solid ${theme.accent}; border-radius: 4px; padding: 0.7rem 1rem; margin-top: 0.75rem; box-shadow: 0 0 20px rgba(51, 255, 102, 0.15); flex-shrink: 0;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <div style="font-family: 'Courier New', monospace; font-size: 1.4rem; font-weight: 600; color: ${theme.accentBright}; text-transform: uppercase; letter-spacing: 0.15em; text-shadow: ${theme.terminalGlow};">▸ NOTES</div>
-              <button onclick="toggleNotes('tonnage')" style="padding: 0.4rem 1rem; background: ${theme.accent}; border: none; border-radius: 4px; color: #000; font-size: 1.4rem; font-weight: 700; cursor: pointer; font-family: 'Courier New', monospace;">
-                ${state.tonnage.showNotes ? 'HIDE' : 'SHOW'}
-              </button>
-            </div>
-            ${state.tonnage.showNotes ? `
-              <textarea id="tonnageNotes" placeholder="Add notes..." style="width: 100%; height: 80px; padding: 0.7rem; font-size: 1.4rem; background: ${theme.bgInput}; border: 2px solid ${theme.border}; border-radius: 4px; color: ${theme.text}; font-family: 'Courier New', monospace; box-sizing: border-box; resize: none; margin-top: 0.5rem;">${state.tonnage.notes}</textarea>
-            ` : ''}
           </div>
         </div>
       `;
@@ -1130,7 +1195,7 @@
                   </div>
                 </div>
               ` : ''}
-                            <div style="background: rgba(0, 40, 20, 0.95); border: 2px solid ${theme.accent}; border-radius: 4px; padding: 0.7rem 1rem; margin-top: 0.5rem; box-shadow: 0 0 20px rgba(51, 255, 102, 0.15); flex: 1; display: flex; flex-direction: column;">                <div style="display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;">                  <div style="font-family: 'Courier New', monospace; font-size: 1.4rem; font-weight: 600; color: ${theme.accentBright}; text-transform: uppercase; letter-spacing: 0.15em; text-shadow: ${theme.terminalGlow};">▸ NOTES</div>                  <button onclick="toggleNotes('sbr')" style="padding: 0.4rem 1rem; background: ${theme.accent}; border: none; border-radius: 4px; color: #000; font-size: 1.4rem; font-weight: 700; cursor: pointer; font-family: 'Courier New', monospace;">                    ${state.sbr.showNotes ? 'HIDE' : 'SHOW'}                  </button>                </div>                ${state.sbr.showNotes ? `                  <textarea id="sbrNotes" placeholder="Add notes..." style="width: 100%; flex: 1; min-height: 60px; padding: 0.7rem; font-size: 1.4rem; background: ${theme.bgInput}; border: 2px solid ${theme.border}; border-radius: 4px; color: ${theme.text}; font-family: 'Courier New', monospace; box-sizing: border-box; resize: none; margin-top: 0.5rem;">${state.sbr.notes}</textarea>                ` : ''}              </div>
+              ${renderNotesBox('sbr', 'margin-top: 0.5rem; flex: 1; display: flex; flex-direction: column;')}
             </div>
 
             <div style="display: flex; flex-direction: column; min-height: 0;">
@@ -1295,16 +1360,6 @@
       setupScrollableInput('sbrMatThickness', '0.1', 0.1, 20, 1.6, (val, doRender) => { state.sbr.materialThickness = parseFloat(val) || 0; if (doRender) render(); });
       setupScrollableInput('actualSBR', '0.1', 0, 50, TOOL_DATA[state.sbr.toolStyle]?.[state.sbr.toolType]?.maxSBR || 20, (val, doRender) => { state.sbr.actualSBR = parseFloat(val) || 0; if (doRender) render(); });
       
-      // Notes handlers (don't trigger re-render)
-      const dieHeightNotes = document.getElementById('dieHeightNotes');
-      const clearanceNotes = document.getElementById('clearanceNotes');
-      const tonnageNotes = document.getElementById('tonnageNotes');
-      const sbrNotes = document.getElementById('sbrNotes');
-      
-      if (dieHeightNotes) dieHeightNotes.addEventListener('input', (e) => { state.dieHeight.notes = e.target.value; });
-      if (clearanceNotes) clearanceNotes.addEventListener('input', (e) => { state.clearance.notes = e.target.value; });
-      if (tonnageNotes) tonnageNotes.addEventListener('input', (e) => { state.tonnage.notes = e.target.value; });
-      if (sbrNotes) sbrNotes.addEventListener('input', (e) => { state.sbr.notes = e.target.value; });
     }
 
     // Make functions globally available
@@ -1356,6 +1411,103 @@
     window.deleteEmpiricalEntry = function(id) {
       if (confirm('Delete this entry?')) {
         empiricalData = empiricalData.filter(e => e.id !== id);
+        render();
+      }
+    };
+
+    window.startEditEmpiricalEntry = function(id) {
+      editingEmpiricalId = id;
+      render();
+    };
+
+    window.cancelEditEmpiricalEntry = function() {
+      editingEmpiricalId = null;
+      render();
+    };
+
+    window.saveEditEmpiricalEntry = function(id) {
+      const entry = empiricalData.find(e => e.id === id);
+      if (!entry) return;
+
+      const material = document.getElementById('editMaterial_' + id)?.value;
+      const thickness = parseFloat(document.getElementById('editThickness_' + id)?.value);
+      const operation = document.getElementById('editOperation_' + id)?.value;
+      const clearanceMM = parseFloat(document.getElementById('editClearance_' + id)?.value);
+      const notes = document.getElementById('editNotes_' + id)?.value || '';
+
+      if (!material || !thickness || !operation || !clearanceMM) {
+        alert('Please fill in all required fields');
+        return;
+      }
+
+      entry.material = material;
+      entry.thickness = thickness;
+      entry.operation = operation;
+      entry.clearanceMM = clearanceMM;
+      entry.clearancePct = parseFloat(((clearanceMM / thickness) * 100).toFixed(1));
+      entry.notes = notes;
+
+      editingEmpiricalId = null;
+      render();
+    };
+
+    // Notes management
+    window.toggleAddNote = function(page) {
+      state[page].showAddNote = !state[page].showAddNote;
+      state[page].editingNoteId = null;
+      render();
+    };
+
+    window.addNote = function(page) {
+      const title = document.getElementById('newNoteTitle_' + page)?.value?.trim();
+      const content = document.getElementById('newNoteContent_' + page)?.value?.trim();
+
+      if (!title) {
+        alert('Please enter a title');
+        return;
+      }
+
+      state[page].notes.push({
+        id: Date.now(),
+        title,
+        content: content || ''
+      });
+      state[page].showAddNote = false;
+      render();
+    };
+
+    window.startEditNote = function(page, id) {
+      state[page].editingNoteId = id;
+      state[page].showAddNote = false;
+      render();
+    };
+
+    window.cancelEditNote = function(page) {
+      state[page].editingNoteId = null;
+      render();
+    };
+
+    window.saveEditNote = function(page, id) {
+      const note = state[page].notes.find(n => n.id === id);
+      if (!note) return;
+
+      const title = document.getElementById('editNoteTitle_' + page + '_' + id)?.value?.trim();
+      const content = document.getElementById('editNoteContent_' + page + '_' + id)?.value?.trim();
+
+      if (!title) {
+        alert('Please enter a title');
+        return;
+      }
+
+      note.title = title;
+      note.content = content || '';
+      state[page].editingNoteId = null;
+      render();
+    };
+
+    window.deleteNote = function(page, id) {
+      if (confirm('Delete this note?')) {
+        state[page].notes = state[page].notes.filter(n => n.id !== id);
         render();
       }
     };
