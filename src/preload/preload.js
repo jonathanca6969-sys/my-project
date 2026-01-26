@@ -54,6 +54,40 @@ contextBridge.exposeInMainWorld('electronAPI', {
     restore: (backupName) => ipcRenderer.invoke('backup:restore', backupName)
   },
 
+  // Network / Shared Brain
+  network: {
+    getStatus: () => ipcRenderer.invoke('network:getStatus'),
+    testConnection: (path) => ipcRenderer.invoke('network:testConnection', path),
+    setUncPath: (path) => ipcRenderer.invoke('network:setUncPath', path),
+    getConfig: () => ipcRenderer.invoke('network:getConfig'),
+    saveConfig: (config) => ipcRenderer.invoke('network:saveConfig', config),
+    forceSync: () => ipcRenderer.invoke('network:forceSync'),
+
+    // Push events from main process
+    onDataChanged: (callback) => ipcRenderer.on('shared:dataChanged', (event, data) => callback(data)),
+    onConnectionLost: (callback) => ipcRenderer.on('shared:connectionLost', () => callback()),
+    onConnectionRestored: (callback) => ipcRenderer.on('shared:connectionRestored', () => callback()),
+    onSyncCompleted: (callback) => ipcRenderer.on('shared:syncCompleted', (event, stats) => callback(stats)),
+    onWriteFailed: (callback) => ipcRenderer.on('shared:writeFailed', (event, error) => callback(error)),
+    onError: (callback) => ipcRenderer.on('shared:error', (event, err) => callback(err)),
+
+    // Cleanup
+    removeAllListeners: () => {
+      ipcRenderer.removeAllListeners('shared:dataChanged');
+      ipcRenderer.removeAllListeners('shared:connectionLost');
+      ipcRenderer.removeAllListeners('shared:connectionRestored');
+      ipcRenderer.removeAllListeners('shared:syncCompleted');
+      ipcRenderer.removeAllListeners('shared:writeFailed');
+      ipcRenderer.removeAllListeners('shared:error');
+    }
+  },
+
+  // Migration (SQLite to JSON)
+  migration: {
+    check: () => ipcRenderer.invoke('migration:check'),
+    run: () => ipcRenderer.invoke('migration:run')
+  },
+
   // App info
   app: {
     getVersion: () => ipcRenderer.invoke('app:getVersion'),

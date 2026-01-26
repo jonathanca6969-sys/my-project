@@ -15,7 +15,9 @@
     "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {
-    "better-sqlite3": "^9.4.3"
+    "better-sqlite3": "^9.4.3",
+    "chokidar": "^3.6.0",
+    "write-file-atomic": "^4.0.2"
   },
   "devDependencies": {
     "electron": "^28.2.0",
@@ -37,14 +39,19 @@
       {
         "from": "data",
         "to": "data",
-        "filter": ["**/*", "!backups/*"]
+        "filter": [
+          "**/*",
+          "!backups/*"
+        ]
       }
     ],
     "win": {
       "target": [
         {
           "target": "nsis",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         }
       ],
       "icon": "build/icon.ico"
