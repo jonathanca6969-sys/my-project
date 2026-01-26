@@ -7,7 +7,20 @@ venv/
 # Build outputs
 dist/
 build/
+out/
 *.pyc
+
+# Electron
+*.log
+*.asar
+
+# User data (created at runtime)
+data/*.db
+data/*.json
+data/backups/
+
+# Package lock (optional - can be committed)
+package-lock.json
 
 # IDE
 .idea/
