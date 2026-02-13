@@ -2,13 +2,16 @@
 node_modules/
 __pycache__/
 venv/
-.env
 
-# Build outputs
+# Build outputs (JS/Python)
 dist/
 build/
 out/
 *.pyc
+
+# .NET build outputs
+bin/
+obj/
 
 # Electron
 *.log
@@ -26,8 +29,14 @@ package-lock.json
 .idea/
 .vscode/
 *.swp
+*.user
+*.suo
+*.DotSettings.user
 
 # OS
 .DS_Store
 Thumbs.db
 nul
+
+# Secrets / env
+.env

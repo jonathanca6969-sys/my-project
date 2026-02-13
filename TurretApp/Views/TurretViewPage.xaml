@@ -1,0 +1,56 @@
+<Page x:Class="TurretApp.Views.TurretViewPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Background="{DynamicResource BgBrush}">
+    <Grid Margin="20,10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,6">
+            <TextBlock Text="&#x2388; TURRET VIEW" FontSize="36" FontWeight="Bold"
+                       Foreground="{DynamicResource AccentBrightBrush}"
+                       FontFamily="{DynamicResource TerminalFont}"/>
+            <TextBlock Text="Euromac MTX 12-30  ·  6 Stations  ·  Multi-6 [STN 1]  ·  Multi-10 [STN 4]"
+                       FontSize="18" Foreground="{DynamicResource TextMutedBrush}"
+                       FontFamily="{DynamicResource TerminalFont}" Margin="0,4,0,0"/>
+        </StackPanel>
+
+        <!-- Content: Turret + Detail Panel -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="520"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Turret area (layered: turret + zoom overlay) -->
+            <Grid Grid.Column="0" Margin="0,0,12,0">
+                <!-- Layer 0: Normal turret -->
+                <Viewbox x:Name="TurretBox" Stretch="Uniform">
+                    <Canvas x:Name="TurretCanvas" Width="1400" Height="1400"
+                            ClipToBounds="False"/>
+                </Viewbox>
+
+                <!-- Layer 1: Zoom overlay (hidden by default) -->
+                <Border x:Name="ZoomOverlay" Visibility="Collapsed">
+                    <Viewbox Stretch="Uniform" Margin="10">
+                        <Canvas x:Name="ZoomCanvas" Width="1200" Height="1200"
+                                Background="Transparent"
+                                MouseLeftButtonDown="OnZoomClick"/>
+                    </Viewbox>
+                </Border>
+            </Grid>
+
+            <!-- Detail Panel -->
+            <Border Grid.Column="1" BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="2" CornerRadius="6" Padding="24"
+                    Background="{DynamicResource BgSecondaryBrush}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel x:Name="DetailPanel"/>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+    </Grid>
+</Page>

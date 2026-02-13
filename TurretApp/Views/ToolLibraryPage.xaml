@@ -1,0 +1,144 @@
+<Page x:Class="TurretApp.Views.ToolLibraryPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Background="{StaticResource BgBrush}">
+    <Grid Margin="30,20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,16">
+            <TextBlock Text="&#x2692; TOOL LIBRARY" FontSize="22" FontWeight="Bold" Foreground="{StaticResource AccentBrightBrush}" FontFamily="{StaticResource TerminalFont}"/>
+            <TextBlock Text="Master inventory of all punch and die tooling" FontSize="13" Foreground="{StaticResource TextMutedBrush}" Margin="0,4,0,0"/>
+        </StackPanel>
+
+        <!-- Search Box -->
+        <Border Grid.Row="1" Style="{StaticResource SectionPanel}" Padding="12,8" Margin="0,0,0,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="> SEARCH: " FontSize="14" Foreground="{StaticResource AccentBrush}" FontFamily="{StaticResource TerminalFont}" VerticalAlignment="Center"/>
+                <TextBox Grid.Column="1" x:Name="TxtSearch" TextChanged="OnSearchChanged"
+                         Background="{StaticResource BgInputBrush}" Foreground="{StaticResource TextBrush}"
+                         BorderBrush="{StaticResource BorderBrush}" Padding="8,6" FontSize="14" FontFamily="{StaticResource TerminalFont}"/>
+            </Grid>
+        </Border>
+
+        <!-- Filter Row -->
+        <Border Grid.Row="2" Style="{StaticResource SectionPanel}" Padding="12,8" Margin="0,0,0,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="Station:" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <ComboBox Grid.Column="1" x:Name="CboStation" SelectionChanged="OnFilterChanged"
+                          Background="{StaticResource BgInputBrush}" Foreground="{StaticResource TextBrush}"
+                          BorderBrush="{StaticResource BorderBrush}" Padding="6,4" FontSize="13" MinWidth="100">
+                    <ComboBoxItem Content="All" Tag="All"/>
+                    <ComboBoxItem Content="A (12.7mm)" Tag="A"/>
+                    <ComboBoxItem Content="B (24mm)" Tag="B"/>
+                    <ComboBoxItem Content="C (31mm)" Tag="C"/>
+                    <ComboBoxItem Content="D (89mm)" Tag="D"/>
+                </ComboBox>
+
+                <TextBlock Grid.Column="3" Text="Category:" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <ComboBox Grid.Column="4" x:Name="CboCategory" SelectionChanged="OnFilterChanged"
+                          Background="{StaticResource BgInputBrush}" Foreground="{StaticResource TextBrush}"
+                          BorderBrush="{StaticResource BorderBrush}" Padding="6,4" FontSize="13" MinWidth="120">
+                    <ComboBoxItem Content="All" Tag="All"/>
+                    <ComboBoxItem Content="Punch" Tag="Punch"/>
+                    <ComboBoxItem Content="Die" Tag="Die"/>
+                    <ComboBoxItem Content="Cluster" Tag="Cluster"/>
+                </ComboBox>
+
+                <TextBlock Grid.Column="6" Text="Condition:" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <ComboBox Grid.Column="7" x:Name="CboCondition" SelectionChanged="OnFilterChanged"
+                          Background="{StaticResource BgInputBrush}" Foreground="{StaticResource TextBrush}"
+                          BorderBrush="{StaticResource BorderBrush}" Padding="6,4" FontSize="13" MinWidth="120">
+                    <ComboBoxItem Content="All" Tag="All"/>
+                    <ComboBoxItem Content="Good" Tag="Good"/>
+                    <ComboBoxItem Content="Fair" Tag="Fair"/>
+                    <ComboBoxItem Content="Worn" Tag="Worn"/>
+                    <ComboBoxItem Content="Replace" Tag="Replace"/>
+                </ComboBox>
+
+                <TextBlock Grid.Column="9" x:Name="TxtResultCount" Text="0 tools" FontSize="12" Foreground="{StaticResource TextMutedBrush}" VerticalAlignment="Center" FontFamily="{StaticResource TerminalFont}"/>
+            </Grid>
+        </Border>
+
+        <!-- Data Grid -->
+        <DataGrid Grid.Row="3" x:Name="DgTools" AutoGenerateColumns="False" CanUserAddRows="False"
+                  Background="{StaticResource BgTertiaryBrush}" Foreground="{StaticResource TextBrush}"
+                  BorderBrush="{StaticResource BorderBrush}" BorderThickness="1"
+                  RowBackground="{StaticResource BgSecondaryBrush}" AlternatingRowBackground="{StaticResource BgTertiaryBrush}"
+                  GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{StaticResource BorderBrush}"
+                  HeadersVisibility="Column" FontSize="13" SelectionMode="Single"
+                  SelectionChanged="OnToolSelected" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Station" Binding="{Binding Station}" Width="70"/>
+                <DataGridTextColumn Header="Type" Binding="{Binding ToolType}" Width="100"/>
+                <DataGridTextColumn Header="Shape" Binding="{Binding Shape}" Width="80"/>
+                <DataGridTextColumn Header="Size (mm)" Binding="{Binding Size}" Width="100"/>
+                <DataGridTextColumn Header="Clearance" Binding="{Binding Clearance, StringFormat='{}{0:F2}'}" Width="80"/>
+                <DataGridTextColumn Header="Condition" Binding="{Binding Condition}" Width="80"/>
+                <DataGridTextColumn Header="Sharpen?" Binding="{Binding NeedsSharpen}" Width="70"/>
+                <DataGridTextColumn Header="Notes" Binding="{Binding Notes}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Detail Panel (edit condition/notes on selected tool) -->
+        <Border Grid.Row="4" x:Name="DetailPanel" Style="{StaticResource SectionPanel}" Margin="0,10,0,0" Visibility="Collapsed">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="12"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="160"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" x:Name="TxtDetailTitle" Text="SELECTED: --" FontSize="13" Foreground="{StaticResource AccentBrightBrush}" FontWeight="Bold" VerticalAlignment="Center" FontFamily="{StaticResource TerminalFont}"/>
+
+                <TextBlock Grid.Column="2" Text="Condition:" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                <ComboBox Grid.Column="3" x:Name="CboEditCondition"
+                          Background="{StaticResource BgInputBrush}" Foreground="{StaticResource TextBrush}"
+                          BorderBrush="{StaticResource BorderBrush}" Padding="6,4" FontSize="13">
+                    <ComboBoxItem Content="Good"/>
+                    <ComboBoxItem Content="Fair"/>
+                    <ComboBoxItem Content="Worn"/>
+                    <ComboBoxItem Content="Replace"/>
+                </ComboBox>
+
+                <TextBlock Grid.Column="5" Text="Notes:" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                <TextBox Grid.Column="6" x:Name="TxtEditNotes"
+                         Background="{StaticResource BgInputBrush}" Foreground="{StaticResource TextBrush}"
+                         BorderBrush="{StaticResource BorderBrush}" Padding="6,4" FontSize="13"/>
+
+                <Button Grid.Column="8" Content="SAVE" Click="OnSaveDetail" Style="{StaticResource NavButton}" Padding="16,6" Margin="0,0,8,0"/>
+                <Button Grid.Column="9" Content="DELETE" Click="OnDeleteTool" Style="{StaticResource DangerButton}" Padding="16,6"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Page>

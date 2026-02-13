@@ -1,0 +1,188 @@
+<Page x:Class="TurretApp.Views.SbrPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Background="{StaticResource BgBrush}">
+    <Grid Margin="30,20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,16">
+            <TextBlock Text="&#x25A4; SBR CALCULATOR" FontSize="22" FontWeight="Bold" Foreground="{StaticResource AccentBrightBrush}" FontFamily="{StaticResource TerminalFont}"/>
+            <TextBlock Text="Straight Before Radius - minimum SBR validation and grind life tracking" FontSize="13" Foreground="{StaticResource TextMutedBrush}" Margin="0,4,0,0"/>
+        </StackPanel>
+
+        <!-- Main Content: Left inputs, Right results -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- LEFT COLUMN: Inputs -->
+            <StackPanel Grid.Column="0">
+
+                <!-- Tool Style / Type -->
+                <Border Style="{StaticResource SectionPanel}">
+                    <StackPanel>
+                        <TextBlock Text="TOOL SELECTION" Style="{StaticResource SectionHeader}"/>
+
+                        <TextBlock Text="Tool Style" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,10,0,4"/>
+                        <ComboBox x:Name="CboToolStyle" SelectionChanged="OnInputChanged"
+                                  Background="{StaticResource BgInputBrush}" Foreground="{StaticResource TextBrush}"
+                                  BorderBrush="{StaticResource BorderBrush}" Padding="8,6" FontSize="14">
+                            <ComboBoxItem Content="Mate Standard (Trumpf Style)" Tag="MateStd"/>
+                            <ComboBoxItem Content="Mate Ultra (UltraTEC)" Tag="MateUltra"/>
+                            <ComboBoxItem Content="Euromac Standard" Tag="EuroStd"/>
+                            <ComboBoxItem Content="Euromac Thick Turret" Tag="EuroThick"/>
+                        </ComboBox>
+
+                        <TextBlock Text="Tool Type" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,12,0,4"/>
+                        <ComboBox x:Name="CboToolType" SelectionChanged="OnInputChanged"
+                                  Background="{StaticResource BgInputBrush}" Foreground="{StaticResource TextBrush}"
+                                  BorderBrush="{StaticResource BorderBrush}" Padding="8,6" FontSize="14">
+                            <ComboBoxItem Content="Round Punch" Tag="Round"/>
+                            <ComboBoxItem Content="Square Punch" Tag="Square"/>
+                            <ComboBoxItem Content="Rectangle Punch" Tag="Rectangle"/>
+                            <ComboBoxItem Content="Oblong Punch" Tag="Oblong"/>
+                            <ComboBoxItem Content="Special Shape" Tag="Special"/>
+                        </ComboBox>
+                    </StackPanel>
+                </Border>
+
+                <!-- Measurements -->
+                <Border Style="{StaticResource SectionPanel}" Margin="0,12,0,0">
+                    <StackPanel>
+                        <TextBlock Text="MEASUREMENTS" Style="{StaticResource SectionHeader}"/>
+
+                        <TextBlock Text="Material Thickness (mm)" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,10,0,4"/>
+                        <TextBox x:Name="TxtMatThickness" TextChanged="OnInputChanged"
+                                 Background="{StaticResource BgInputBrush}" Foreground="{StaticResource TextBrush}"
+                                 BorderBrush="{StaticResource BorderBrush}" Padding="8,6" FontSize="16" FontFamily="{StaticResource TerminalFont}"/>
+
+                        <TextBlock Text="Actual (Measured) SBR (mm)" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,12,0,4"/>
+                        <TextBox x:Name="TxtActualSbr" TextChanged="OnInputChanged"
+                                 Background="{StaticResource BgInputBrush}" Foreground="{StaticResource TextBrush}"
+                                 BorderBrush="{StaticResource BorderBrush}" Padding="8,6" FontSize="16" FontFamily="{StaticResource TerminalFont}"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Tool Specs Display -->
+                <Border Style="{StaticResource SectionPanel}" Margin="0,12,0,0">
+                    <StackPanel>
+                        <TextBlock Text="TOOL SPECS (FROM SELECTION)" Style="{StaticResource SectionHeader}"/>
+                        <Grid Margin="0,10,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="New OAL:" Foreground="{StaticResource TextMutedBrush}" FontSize="12" Margin="0,3"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" x:Name="TxtSpecOal" Text="--" Foreground="{StaticResource TextBrush}" FontSize="12" FontFamily="{StaticResource TerminalFont}" Margin="0,3"/>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="New SBR:" Foreground="{StaticResource TextMutedBrush}" FontSize="12" Margin="0,3"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" x:Name="TxtSpecSbr" Text="--" Foreground="{StaticResource TextBrush}" FontSize="12" FontFamily="{StaticResource TerminalFont}" Margin="0,3"/>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Max Grind:" Foreground="{StaticResource TextMutedBrush}" FontSize="12" Margin="0,3"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1" x:Name="TxtSpecMaxGrind" Text="--" Foreground="{StaticResource TextBrush}" FontSize="12" FontFamily="{StaticResource TerminalFont}" Margin="0,3"/>
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Min SBR Factor:" Foreground="{StaticResource TextMutedBrush}" FontSize="12" Margin="0,3"/>
+                            <TextBlock Grid.Row="3" Grid.Column="1" x:Name="TxtSpecMinFactor" Text="--" Foreground="{StaticResource TextBrush}" FontSize="12" FontFamily="{StaticResource TerminalFont}" Margin="0,3"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+
+            <!-- RIGHT COLUMN: Results -->
+            <StackPanel Grid.Column="2">
+
+                <!-- Status Badge -->
+                <Border x:Name="StatusBorder" Style="{StaticResource SectionPanel}">
+                    <StackPanel>
+                        <Border x:Name="StatusBadge" CornerRadius="4" Padding="16,10" HorizontalAlignment="Left" Background="{StaticResource BgTertiaryBrush}">
+                            <TextBlock x:Name="TxtStatusBadge" Text="AWAITING INPUT" FontSize="16" FontWeight="Bold" Foreground="{StaticResource TextMutedBrush}" FontFamily="{StaticResource TerminalFont}"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <!-- Calculated Results -->
+                <Border Style="{StaticResource SectionPanel}" Margin="0,12,0,0">
+                    <StackPanel>
+                        <TextBlock Text="CALCULATED RESULTS" Style="{StaticResource SectionHeader}"/>
+
+                        <!-- Min SBR Required -->
+                        <Border Background="{StaticResource BgTertiaryBrush}" CornerRadius="3" Padding="14,12" Margin="0,10,0,0">
+                            <StackPanel>
+                                <TextBlock Text="MINIMUM SBR REQUIRED" FontSize="11" Foreground="{StaticResource TextMutedBrush}"/>
+                                <TextBlock x:Name="TxtMinSbrRequired" Text="--" FontSize="28" FontWeight="Bold" Foreground="{StaticResource AccentBrightBrush}" FontFamily="{StaticResource TerminalFont}" Margin="0,4,0,0"/>
+                                <TextBlock x:Name="TxtMinSbrFormula" Text="" FontSize="11" Foreground="{StaticResource TextMutedBrush}" Margin="0,2,0,0"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Remaining Grind Life -->
+                        <Border Background="{StaticResource BgTertiaryBrush}" CornerRadius="3" Padding="14,12" Margin="0,10,0,0">
+                            <StackPanel>
+                                <TextBlock Text="REMAINING GRIND LIFE" FontSize="11" Foreground="{StaticResource TextMutedBrush}"/>
+                                <TextBlock x:Name="TxtGrindLife" Text="--" FontSize="28" FontWeight="Bold" Foreground="{StaticResource AccentBrightBrush}" FontFamily="{StaticResource TerminalFont}" Margin="0,4,0,0"/>
+                                <!-- Progress bar -->
+                                <Grid Height="16" Margin="0,8,0,0">
+                                    <Border Background="{StaticResource BgSecondaryBrush}" CornerRadius="3"/>
+                                    <Border x:Name="GrindLifeBar" Background="{StaticResource GoodBrush}" CornerRadius="3" HorizontalAlignment="Left" Width="0"/>
+                                </Grid>
+                                <TextBlock x:Name="TxtGrindLifePct" Text="" FontSize="11" Foreground="{StaticResource TextMutedBrush}" Margin="0,4,0,0"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Max Grind Life + Min OAL -->
+                        <Grid Margin="0,10,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.Column="0" Background="{StaticResource BgTertiaryBrush}" CornerRadius="3" Padding="14,12">
+                                <StackPanel>
+                                    <TextBlock Text="MAX GRIND LIFE" FontSize="11" Foreground="{StaticResource TextMutedBrush}"/>
+                                    <TextBlock x:Name="TxtMaxGrindLife" Text="--" FontSize="20" FontWeight="Bold" Foreground="{StaticResource TextBrush}" FontFamily="{StaticResource TerminalFont}" Margin="0,4,0,0"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="2" Background="{StaticResource BgTertiaryBrush}" CornerRadius="3" Padding="14,12">
+                                <StackPanel>
+                                    <TextBlock Text="MIN OAL" FontSize="11" Foreground="{StaticResource TextMutedBrush}"/>
+                                    <TextBlock x:Name="TxtMinOal" Text="--" FontSize="20" FontWeight="Bold" Foreground="{StaticResource TextBrush}" FontFamily="{StaticResource TerminalFont}" Margin="0,4,0,0"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Reference Images -->
+                <Border Style="{StaticResource SectionPanel}" Margin="0,12,0,0">
+                    <StackPanel>
+                        <TextBlock Text="REFERENCE DIAGRAMS" Style="{StaticResource SectionHeader}"/>
+                        <Grid Margin="0,10,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" Background="{StaticResource BgTertiaryBrush}" CornerRadius="3" Padding="4">
+                                <Image x:Name="ImgRef1" Source="/Assets/1.PNG" Stretch="Uniform" MaxHeight="160"/>
+                            </Border>
+                            <Border Grid.Column="2" Background="{StaticResource BgTertiaryBrush}" CornerRadius="3" Padding="4">
+                                <Image x:Name="ImgRef2" Source="/Assets/2.PNG" Stretch="Uniform" MaxHeight="160"/>
+                            </Border>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Page>

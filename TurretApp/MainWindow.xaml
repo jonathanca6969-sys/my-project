@@ -1,0 +1,67 @@
+<Window x:Class="TurretApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Buttnutts Turret and Tooling - Euromac and Mate Edition v2.0"
+        Width="1400" Height="900"
+        MinWidth="1000" MinHeight="700"
+        Background="{DynamicResource BgBrush}"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Top Bar: Nav buttons (left) + Settings gear (right) -->
+        <Grid Grid.Row="0" Margin="12,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Nav (collapsed on home) -->
+            <StackPanel x:Name="NavBar" Grid.Column="0" Orientation="Horizontal" Visibility="Collapsed">
+                <Button Content="HOME" Style="{DynamicResource NavButton}" Click="NavHome" Margin="0,0,4,0"/>
+                <Button x:Name="BtnDieHeight" Content="DIE HEIGHT" Style="{DynamicResource NavButton}" Click="NavDieHeight" Margin="0,0,4,0"/>
+                <Button x:Name="BtnClearance" Content="CLEARANCE" Style="{DynamicResource NavButton}" Click="NavClearance" Margin="0,0,4,0"/>
+                <Button x:Name="BtnTonnage" Content="TONNAGE" Style="{DynamicResource NavButton}" Click="NavTonnage" Margin="0,0,4,0"/>
+                <Button x:Name="BtnSbr" Content="SBR" Style="{DynamicResource NavButton}" Click="NavSbr" Margin="0,0,4,0"/>
+                <Button x:Name="BtnToolLib" Content="TOOL LIBRARY" Style="{DynamicResource NavButton}" Click="NavToolLibrary" Margin="0,0,4,0"/>
+                <Button x:Name="BtnTurretView" Content="TURRET VIEW" Style="{DynamicResource NavButton}" Click="NavTurretView" Margin="0,0,4,0"/>
+            </StackPanel>
+
+            <!-- Settings gear - always visible -->
+            <Button x:Name="BtnSettings" Grid.Column="1" Content="&#x2699;"
+                    Click="NavSettings" VerticalAlignment="Center"
+                    FontSize="20" Padding="8,4" Cursor="Hand"
+                    Background="Transparent" BorderThickness="0"
+                    Foreground="{DynamicResource TextMutedBrush}">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="Transparent" CornerRadius="3" Padding="{TemplateBinding Padding}">
+                            <TextBlock x:Name="Ico" Text="&#x2699;" FontSize="20"
+                                       Foreground="{DynamicResource TextMutedBrush}"
+                                       FontFamily="{DynamicResource TerminalFont}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Ico" Property="Foreground" Value="{DynamicResource AccentBrightBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </Grid>
+
+        <!-- Content -->
+        <Frame x:Name="ContentFrame" Grid.Row="1" NavigationUIVisibility="Hidden"/>
+
+        <!-- Footer -->
+        <TextBlock x:Name="Footer" Grid.Row="2"
+                   Text="Buttnutts Turret and Tooling  |  Euromac and Mate Edition  |  v2.0"
+                   FontSize="11" Foreground="{DynamicResource TextMutedBrush}"
+                   HorizontalAlignment="Center" Margin="0,4,0,8" Visibility="Collapsed"/>
+    </Grid>
+</Window>
